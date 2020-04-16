@@ -9,9 +9,13 @@
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
 
+import sys
+sys.path.append(".")
+sys.path.append("..")
 from treelib import Node, Tree
 import pickle, json, copy, time, random
-import SimVM, opt_db
+import SimVM
+import opt_db
 
 
 def store(data, filename):

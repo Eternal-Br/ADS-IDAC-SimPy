@@ -10,7 +10,8 @@ var mydata = [{
 var ec_tree_option = {
 	tooltip: {
 		trigger: 'item',
-		triggerOn: 'mousemove'
+		triggerOn: 'mousemove',
+		formatter: '{c}', // 字符串模板
 	},
 	series: [{
 		type: 'tree',
@@ -28,6 +29,7 @@ var ec_tree_option = {
 			verticalAlign: 'middle',
 			align: 'right',
 			fontSize: 16,
+			formatter: '{c}', // 字符串模板
 		},
 		lineStyle: {
 			color: "'#838300'",

@@ -9,6 +9,9 @@
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
 
+import sys
+sys.path.append(".")
+sys.path.append("..")
 import math, random, time, copy, uuid, threading
 import CPA, TransBCD, DrawVoAreas, opt_db
 import HumanActivity as HA

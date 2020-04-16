@@ -39,7 +39,7 @@ def insert_into_simtree(TREEID, data):
     # print(sql_insert)
     cursor.execute(sql_insert, (TREEID, data))
     mydb.commit() # 提交插入操作
-    print("1 record inserted into sim_tree.")
+    print("1 record inserted.")
     mydb.close()  # 关闭数据库连接
     pass
 
@@ -55,7 +55,7 @@ def insert_into_simvm(VMID, data):
     # print(sql_insert)
     cursor.execute(sql_insert, (VMID, data))
     mydb.commit() # 提交插入操作
-    print("1 record inserted into sim_vm.")
+    print("1 record inserted.")
     mydb.close()  # 关闭数据库连接
     pass
 
@@ -73,7 +73,7 @@ def insert_into_voimg(imgID, VMID, data):
     # print(sql_insert)
     cursor.execute(sql_insert, (imgID, VMID, data))
     mydb.commit() # 提交插入操作
-    print("1 record inserted into voimg.")
+    print("1 record inserted.")
     mydb.close()  # 关闭数据库连接
     pass
 

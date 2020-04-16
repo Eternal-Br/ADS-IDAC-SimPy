@@ -3,10 +3,13 @@
 Created on Sun Dec 15 19:52:33 2019
 
 @author: Jinfen Zhang
-Edit by Bruce
+@edit by Bruce
 
 """
-# TODO: TransBCD
+import sys, os
+current_dir = os.path.dirname(__file__)
+sys.path.append(current_dir)
+sys.path.append("..")
 import numpy as np
 import GetVoPolygons as gvp
 from matplotlib.patches import Polygon
@@ -103,6 +106,7 @@ def GenVOImgB64(pos1, course1, speed1, pos2, course2, speed2, ImgID):
     buffer = io.BytesIO()
     fig.canvas.print_png(buffer)
     b64 = base64.b64encode(buffer.getvalue())
+    plt.close(fig)
 
     # with open('./res/VOImg/testS2f01.png', 'wb') as f:
     #     f.write(data)
