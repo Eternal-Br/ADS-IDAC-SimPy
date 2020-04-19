@@ -132,7 +132,7 @@ function draw_dynamic_polyLine(pois, Voarr) {
 				// console.log(lineDataIndex, pois[0][lineDataIndex], pois[0][lineDataIndex + 1]);
 			}
 			lineDataIndex++;
-		}, 1000);
+		}, 100);
 	}
 	updateVoImg(Voarr[pois[0].length-1])
 }

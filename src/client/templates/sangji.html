@@ -83,6 +83,8 @@
 	map.addOverlay(marker);               // 将标注添加到地图中
 	marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
 
-	var top_left_control = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+	var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，缩放
+	var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
 	map.addControl(top_left_control);
+	map.addControl(top_right_navigation);
 </script>
