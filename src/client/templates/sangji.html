@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<style type="text/css">
+			body,
+			html,
+			#allmap {
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				margin: 0;
+				font-family: "微软雅黑";
+			}
+		</style>
+		<script type="text/javascript" src="//api.map.baidu.com/api?v=3.0&ak=S9AqsqjyKkt9SR4Sn7dGh5ESA7vdyrzg"></script>
+		<title>桑吉轮事件分析</title>
+	</head>
+	<body>
+		<div id="allmap"></div>
+	</body>
+</html>
+<script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("allmap"); // 创建Map实例
+	map.centerAndZoom(new BMap.Point(124.9598, 30.85086), 15); // 初始化地图,设置中心点坐标和地图级别
+	map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+	var sy_s = new BMap.Symbol(BMap_Symbol_SHAPE_BACKWARD_OPEN_ARROW, {
+		scale: 0.6, //图标缩放大小
+		strokeColor: '#aaff00', //设置矢量图标的线填充颜色
+		strokeWeight: '2', //设置线宽
+	});
+	var sy_t = new BMap.Symbol(BMap_Symbol_SHAPE_BACKWARD_OPEN_ARROW, {
+		scale: 0.6, //图标缩放大小
+		strokeColor: '#ffaaff', //设置矢量图标的线填充颜色
+		strokeWeight: '2', //设置线宽
+	});
+	var icons_s = new BMap.IconSequence(sy_s, '10', '30');
+	var icons_t = new BMap.IconSequence(sy_t, '10', '30');	
+	// 创建polyline对象
+	var sangji = [
+		new BMap.Point(125.0641,30.96703), new BMap.Point(125.0616,30.96395), new BMap.Point(125.0591,30.96087), new BMap.Point(125.0566,30.95773), new BMap.Point(125.0541,30.95463), new BMap.Point(125.0516,30.95154), 
+		new BMap.Point(125.0491,30.94845), new BMap.Point(125.0467,30.94539), new BMap.Point(125.0442,30.94233), new BMap.Point(125.0417,30.93929), new BMap.Point(125.0392,30.93627), new BMap.Point(125.0368,30.93328), 
+		new BMap.Point(125.0343,30.93029), new BMap.Point(125.0318,30.92731), new BMap.Point(125.0294,30.92433), new BMap.Point(125.0269,30.92134), new BMap.Point(125.0244,30.91838), new BMap.Point(125.022,30.9154), 
+		new BMap.Point(125.0195,30.91242), new BMap.Point(125.0171,30.90945), new BMap.Point(125.0147,30.90647), new BMap.Point(125.0122,30.90349), new BMap.Point(125.0097,30.90051), new BMap.Point(125.0073,30.89757), 
+		new BMap.Point(125.0047,30.89459), new BMap.Point(125.0021,30.89167), new BMap.Point(124.9995,30.88875), new BMap.Point(124.997,30.88586), new BMap.Point(124.9944,30.88295), new BMap.Point(124.9921,30.88049), 
+		new BMap.Point(124.989,30.87724), new BMap.Point(124.9861,30.8745), new BMap.Point(124.9832,30.87183), new BMap.Point(124.9797,30.86871), new BMap.Point(124.9774,30.86671), new BMap.Point(124.9741,30.86383), 
+		new BMap.Point(124.971,30.86118), new BMap.Point(124.9679,30.85854), new BMap.Point(124.9647,30.85591), new BMap.Point(124.9616,30.85312), new BMap.Point(124.9615,30.85245), new BMap.Point(124.9609,30.85206), 
+		new BMap.Point(124.9578,30.85433), new BMap.Point(124.9601,30.85132), new BMap.Point(124.9598,30.85086)]
+	var target = [
+		new BMap.Point(124.9655,30.73833), new BMap.Point(124.9653,30.74117), new BMap.Point(124.965,30.744), new BMap.Point(124.9648,30.74683), new BMap.Point(124.9647,30.74967), new BMap.Point(124.9643,30.7525), 
+		new BMap.Point(124.9642,30.7555), new BMap.Point(124.964,30.75833), new BMap.Point(124.9638,30.76117), new BMap.Point(124.9637,30.764), new BMap.Point(124.9635,30.767), new BMap.Point(124.9633,30.76983), 
+		new BMap.Point(124.9632,30.77267), new BMap.Point(124.963,30.77567), new BMap.Point(124.9628,30.7785), new BMap.Point(124.9628,30.7815), new BMap.Point(124.9627,30.78433), new BMap.Point(124.9627,30.78717), 
+		new BMap.Point(124.9625,30.79017), new BMap.Point(124.9623,30.793), new BMap.Point(124.9623,30.79583), new BMap.Point(124.9622,30.79867), new BMap.Point(124.962,30.80167), new BMap.Point(124.962,30.8045), 
+		new BMap.Point(124.9618,30.80733), new BMap.Point(124.9617,30.81034), new BMap.Point(124.9617,30.81317), new BMap.Point(124.9615,30.81617), new BMap.Point(124.9613,30.819), new BMap.Point(124.9613,30.82139), 
+		new BMap.Point(124.9612,30.82483), new BMap.Point(124.961,30.82767), new BMap.Point(124.9608,30.8305), new BMap.Point(124.9607,30.8335), new BMap.Point(124.9605,30.83633), new BMap.Point(124.9604,30.83929), 
+		new BMap.Point(124.9603,30.8422), new BMap.Point(124.9601,30.84512), new BMap.Point(124.96,30.84802), new BMap.Point(124.9598,30.85083), new BMap.Point(124.9588,30.852), new BMap.Point(124.958,30.8535), 
+		new BMap.Point(124.9578,30.85433), new BMap.Point(124.9578,30.85517), new BMap.Point(124.9578,30.85567)
+		]
+
+	var polyline_sangji = new BMap.Polyline(sangji, {
+		enableEditing: false, //是否启用线编辑，默认为false
+		enableClicking: true, //是否响应点击事件，默认为true
+		icons: [icons_s],
+		strokeWeight: '8', //折线的宽度，以像素为单位
+		strokeOpacity: 0.8, //折线的透明度，取值范围0 - 1
+		strokeColor: "#ff0000" //折线颜色
+	});
+	var polyline_target = new BMap.Polyline(target, {
+		enableEditing: false, //是否启用线编辑，默认为false
+		enableClicking: true, //是否响应点击事件，默认为true
+		icons: [icons_t],
+		strokeWeight: '8', //折线的宽度，以像素为单位
+		strokeOpacity: 0.8, //折线的透明度，取值范围0 - 1
+		strokeColor: "#5500ff" //折线颜色
+	});
+	map.addOverlay(polyline_sangji);
+	map.addOverlay(polyline_target);
+	
+	var meet_point = new BMap.Point(124.9578,30.85433);
+	var marker = new BMap.Marker(meet_point);  // 创建标注
+	map.addOverlay(marker);               // 将标注添加到地图中
+	marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+
+	var top_left_control = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+	map.addControl(top_left_control);
+</script>

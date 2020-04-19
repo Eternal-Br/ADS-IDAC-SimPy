@@ -188,6 +188,6 @@
 # mytu = (0,1,2)
 # print(mytu[2])
 
-import uuid, time
-print(uuid.uuid5(uuid.NAMESPACE_URL, str(time.time())))
+# import uuid, time
+# print(uuid.uuid5(uuid.NAMESPACE_URL, str(time.time())))
 # 81b19b9a-a4cb-531e-b725-741fe2cf890c

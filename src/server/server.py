@@ -100,7 +100,12 @@ def img_index(imageid):
 	# 2. 从数据库加载已经Base64编码的图片数据
     # select_from_voimg返回结果格式为: data = (imgID, VMID, data)
     return opt_db.select_from_voimg(imageid)[2]
-    
+
+
+@app.route("/sangji")
+def sangji():
+    return render_template("sangji.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)

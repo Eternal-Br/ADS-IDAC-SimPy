@@ -1,11 +1,11 @@
 #-------------------------------------------------------------------------------
-# Name:        模块1
-# Purpose:
+# Name:        SimTree
+# Purpose:     To management SimVM
 #
-# Author:      Youan
+# Author:      Bruce
 #
-# Created:     02-03-2020
-# Copyright:   (c) Youan 2020
+# Created:     28-03-2020
+# Copyright:   (c) Bruce 2020
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
 
@@ -57,10 +57,10 @@ def SimTree():
     tree = Tree()
     VMpool = []
     data = {'probability': 1, 'status': [
-        {'time': 0, 'shipid': '10086', 'lon': 123, 'lat': 30.9900001, 'speed': 7, 'heading': 75, 'interval': 100}, 
-        {'time': 0, 'shipid': '10010', 'lon': 123.15, 'lat': 31.0100001, 'speed': 7, 'heading': 270, 'interval': 100},
-        {'time': 0, 'shipid': '10086', 'lon': 123, 'lat': 30.99, 'speed': 7, 'heading': 75, 'interval': 100}, 
-        {'time': 0, 'shipid': '10010', 'lon': 123.15, 'lat': 31.01, 'speed': 7, 'heading': 270, 'interval': 100},
+        {'time': 0, 'shipid': '10086', 'lon': 123, 'lat': 30.9901, 'speed': 7, 'heading': 75, 'interval': 100}, 
+        {'time': 0, 'shipid': '10010', 'lon': 123.15, 'lat': 31.01001, 'speed': 7, 'heading': 270, 'interval': 100},
+        {'time': 0, 'shipid': '10086', 'lon': 123, 'lat': 30.9804, 'speed': 7, 'heading': 65, 'interval': 100}, 
+        {'time': 0, 'shipid': '10010', 'lon': 123.150003, 'lat': 31.013, 'speed': 7, 'heading': 270, 'interval': 100},
        ]}
     parent = None
 
