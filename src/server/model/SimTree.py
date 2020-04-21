@@ -57,11 +57,11 @@ def SimTree():
     tree = Tree()
     VMpool = []
     data = {'probability': 1, 'status': [
-        {'time': 0, 'shipid': '10086', 'lon': 125.0641, 'lat': 30.96703, 'speed': 7, 'heading': 75, 'interval': 100}, 
-        {'time': 0, 'shipid': '10010', 'lon': 124.9655, 'lat': 30.73833, 'speed': 7, 'heading': 270, 'interval': 100},
-        {'time': 0, 'shipid': '10086', 'lon': 125.0641, 'lat': 30.96703, 'speed': 13.4, 'heading': 215.6, 'interval': 100}, 
-        {'time': 0, 'shipid': '10010', 'lon': 124.9655, 'lat': 30.73833, 'speed': 18.3, 'heading': -20, 'interval': 100},
-       ]}
+        {'time': 0, 'shipid': '10086', 'lon': 123, 'lat': 30.9900001, 'speed': 7, 'heading': 75, 'interval': 100}, 
+        {'time': 0, 'shipid': '10010', 'lon': 123.15, 'lat': 31.0100001, 'speed': 7, 'heading': 270, 'interval': 100},
+        {'time': 0, 'shipid': '10086', 'lon': 123, 'lat': 30.99, 'speed': 7, 'heading': 75, 'interval': 100}, 
+        {'time': 0, 'shipid': '10010', 'lon': 123.15, 'lat': 31.01, 'speed': 7, 'heading': 270, 'interval': 100},
+        ]}
     parent = None
 
     def CreatVMTree(tree, data, parent, count):
@@ -95,7 +95,7 @@ def SimTree():
             return initData, initStatus4DrawLines
 
         VMInitData, initStatus4DrawLines = GetInitData(data)
-        VM = SimVM.RunVM(VMInitData, initStatus4DrawLines, interval = 0, timeRatio = 100, runTimes = 32)
+        VM = SimVM.RunVM(VMInitData, initStatus4DrawLines, interval = 0, timeRatio = 200, runTimes = 32)
         Data = {"VMID": VM.id, "SimData": VM.GetSimData(), "NextStepData": VM.GetNextStepData(), "MET": VM.GetMetFlag()}
 
         # tree.create_node(identifier=Data["VMID"], parent=parent)

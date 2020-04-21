@@ -246,11 +246,11 @@ class SimVM:
                 self.__Times = self.__Times - 1
             if self.__GoHead:
                 # 调用上面的函数，存储图片数据，返回图片的ID
-                # imgID = self.StoreVOImgDataAndAddID2ShipStatus()
-                # # 目前只有主船决策，两艘船的VOImg 图一样，向每一艘船中添加VOImgID
-                # # 更好的方案应该是...不，不是...>这玩意儿就应该在虚拟机层面操作.
-                # for ship in self.SimShipRegistered:
-                #     ship.VOImgID = imgID # 向每一艘船中添加VOImgID
+                imgID = self.StoreVOImgDataAndAddID2ShipStatus()
+                # 目前只有主船决策，两艘船的VOImg 图一样，向每一艘船中添加VOImgID
+                # 更好的方案应该是...不，不是...>这玩意儿就应该在虚拟机层面操作.
+                for ship in self.SimShipRegistered:
+                    ship.VOImgID = imgID # 向每一艘船中添加VOImgID
                 thisDeciResult = self.RunOneTime() # 更新之后的
                 self.__METFlag = thisDeciResult["MET"]
                 if self.__METFlag == 1:
@@ -333,11 +333,11 @@ class SimVM:
     def Run(self, initStatus4DrawLines, Times = 0):
         self.__SimData.append(initStatus4DrawLines) # 先将上一次仿真的结束状态添加到状态列表
         # 调用上面的函数，存储图片数据，返回图片的ID
-        # iimgID = self.StoreVOImgDataAndAddID2ShipStatus()
-        # # 目前只有主船决策，两艘船的VOImg 图一样，向每一艘船中添加VOImgID
-        # # 更好的方案应该是...不，不是...>这玩意儿就应该在虚拟机层面操作.
-        # for ship in self.SimShipRegistered:
-        #     ship.VOImgID = iimgID # 向每一艘船中添加VOImgID
+        iimgID = self.StoreVOImgDataAndAddID2ShipStatus()
+        # 目前只有主船决策，两艘船的VOImg 图一样，向每一艘船中添加VOImgID
+        # 更好的方案应该是...不，不是...>这玩意儿就应该在虚拟机层面操作.
+        for ship in self.SimShipRegistered:
+            ship.VOImgID = iimgID # 向每一艘船中添加VOImgID
         self.__SimData.append(self.GetShipStatus()) # 再将当前的起始状态添加到状态列表
         # 启动线程
         self.__Times = Times
