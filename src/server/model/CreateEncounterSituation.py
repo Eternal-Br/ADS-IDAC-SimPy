@@ -134,30 +134,35 @@ class Ship(object):
         
         gama_old = self.gama_old
         gama = self.gama
-        for _ in range(1,time):
+        for _ in range(time):
             gama_t = gama_old + (self.K * delta_t - gama_old) / self.T
             gama_old = gama
             gama = gama_t
             
             course_t += gama_old
-            course_t %= 360.0
             lon_t += self.speed * np.sin(course_t * np.pi / 180)
             lat_t += self.speed * np.cos(course_t * np.pi / 180)
+        course_t %= 360.0
+#        print('turning angle = ',turning_angle)
+#        print('course_t = ', course_t)
+#        print('gama = ', self.gama)
+#        print('ship course = ', self.course)
         return lon_t,lat_t,course_t
     
     #计算不同操舵决策下的奖励值，选择奖励值最大的作为决策
     def calculate_rewards(self, turning_angle, time, Ship):
         lon_own, lat_own, course_own = self.predict_forward(turning_angle, time)
-        course_dest = math.acos(self.dest[0]/np.linalg.norm(self.dest))
+        course_dest = abs(course_own - self.course)
         r_course = np.exp(-course_dest/20) #偏离航向程度相关奖励
         
         lon_temp, lat_temp, course_temp = Ship.predict_forward(0, time)
         DCPA_temp = ComputeDCPA(lon_own, lat_own, self.speed, course_own, 
-                                    lon_temp, lat_temp,ship_list[i].speed, course_temp)
+                                    lon_temp, lat_temp,Ship.speed, course_temp)
         
-        r_safe = 1-np.exp(-DCPA_temp/250)#安全相关的奖励
+        r_safe = 1-np.exp(-DCPA_temp/250 + 1)#安全相关的奖励
+        #print('DCPA = ', DCPA_temp,'r_course = ', r_course, 'r_safe = ', r_safe)
         
-        return r_course+r_safe
+        return 0.3*r_course + 0.7*r_safe
     
     #用于确定本船的角色，Standon为直航船，Giveway是让路船
     #输入参数Ship为目标船
@@ -302,20 +307,53 @@ for i in range(n_ships):
     ship_list.append(ship_temp)
 
 ship_list[0].determin_status(ship_list[1])
-print('The status of ship 1: ', ship_list[0].status)
-
 ship_list[1].determin_status(ship_list[0])
-print('The status of ship 2: ', ship_list[1].status)
 
-reward = ship_list[0].calculate_rewards(5, 50, ship_list[1])
-print(reward)
+#r_left  = ship_list[0].calculate_rewards(5, 100, ship_list[1])
+#print('reward = ',r_left)
 
 pos1 = []
-course1=[]
-for t in range(50):
-    lon_t,lat_t,course_t = ship_list[0].predict_forward(30,t)
-    pos1.append([lon_t, lat_t])
-    course1.append(course_t)
+pos2 = []
+for time in range(1500):
+    for i in range(n_ships):
+        if ship_list[i].status == 'Giveway':
+            ship_temp = ship_list[i].standon[0]
+            #print('Giveway ship is: ',ship_temp)
+            r_left  = ship_list[i].calculate_rewards(-5, 100, ship_temp)
+            r_right = ship_list[i].calculate_rewards(5,100, ship_temp)
+            r_head  = ship_list[i].calculate_rewards(0,100, ship_temp)
+            #print(r_left, r_right, r_head)
+            if r_left > r_right and r_left > r_head:
+                ship_list[i].TurnLeft()
+                print('Time: ', time)
+                print('Turn left')
+            if r_right >= r_left and r_right > r_head:
+                ship_list[i].TurnRight()
+                print('Time: ', time)
+                print('Turn right')
+        ship_list[i].update()
+        if i == 0:
+            pos1.append([ship_list[i].lon, ship_list[i].lat])
+        else:
+            pos2.append([ship_list[i].lon, ship_list[i].lat])
 pos1 = np.array(pos1)
-course1 = np.array(course1)
-plot_situation(pos, course, speed)
+pos2 = np.array(pos2)
+
+
+fig, ax = plt.subplots()
+x1 = []
+y1 = []
+x2 = []
+y2 = []
+for i in range(len(pos1)):
+    x1.append(pos1[i][0])
+    y1.append(pos1[i][1])  # 每迭代一次，将i放入y1中画出来
+    x2.append(pos2[i][0])
+    y2.append(pos2[i][1])
+    ax.cla()   # 清除键
+    plt.plot(x1, y1, '-')
+    plt.plot(x2, y2, '-')
+    plt.pause(0.1)
+#fig, ax = plt.subplots()
+#plt.plot(pos1[:,0],pos1[:,1],'-')
+#plt.plot(pos2[:,0],pos2[:,1],'--')
