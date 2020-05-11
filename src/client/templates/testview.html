@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+	<head>
+		<meta charset="utf-8">
+		<title>风险决策</title>
+		<script src="../static/js/vue.js"></script>
+		<script src="..static/js/index.js"></script>
+		<link rel="stylesheet" type="text/css" href="../static/css/index.css" rel="stylesheet" />
+		<!-- <script src="../static/js/jquery-3.4.1.min.js"></script> -->
+		<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+		<!-- <script src="../static/js/echarts.min.js" type="text/javascript"></script> -->
+		<script src="https://cdn.bootcss.com/echarts/4.7.0/echarts.min.js"></script>
+		<!-- <script src="../static/js/hubei.js" type="text/javascript"></script> -->
+		<!--引入百度地图的jssdk，这里需要使用你在百度地图开发者平台申请的 ak-->
+		<script src="http://api.map.baidu.com/api?v=2.0&ak=S9AqsqjyKkt9SR4Sn7dGh5ESA7vdyrzg"></script>
+		<!-- 引入百度地图扩展 在echarts中引入百度地图的情况下才需要用 如果只是用在线百度地图 则不要要引入-->
+		<!-- <script src="../static/js/bmap.min.js"></script> -->
+		<link rel="stylesheet" type="text/css" href="../static/css/view.css" rel="stylesheet" />
+		
+	</head>
+	
+	<body>
+		<div id="title"><h1>演示系统</h1></div>
+		<div id="dashboard">
+			<div class="toolbox">
+				<div id="tvb01">
+					<el-row>
+						<el-button type="primary">主要按钮</el-button>
+					</el-row>
+				</div>
+			</div>
+			<div class="toolbox">VMID: <input type="text" name="dataId" id="dataId" value="数据未加载..." readonly="readonly"/></div>
+			<div class="toolbox">TreeID: <input type="text" name="treeId" id="treeId" value="数据未加载..." readonly="readonly"/></div>
+			<div class="toolbox">
+				<a href="/en_version" target="_self">
+					<button type="button" id="S2E">Switch to English</button>
+				</a>
+				<button type="button" id="clearPolyline">清除绘图</button>
+				<!-- <button type="button" id="drawPolyline">绘制线图</button><br> -->
+				<!-- <button type="button" id="testDynamicImg">测试动态换图</button> -->
+				<button type="button" id="getSimTree">获取最新仿真树</button>
+			</div>
+			<div class="toolbox">4</div>
+			
+		</div>
+		<div id="vo">
+			<div class="box">
+				<img id="voImg" src="../static/res/Figure1.png" alt="VO img"/>
+			</div>
+		</div>
+		<div id="tree">tree img</div>
+		<div id="map">map img</div>
+		<script src="../static/js/ec_tree.js"></script>
+		<script src="../static/js/my_bmap.js"></script>
+		<script src="../static/js/utils.js"></script>
+		<script type="text/javascript">
+			new Vue({
+				data: {
+					
+				}
+			}).$mount('#tvb01')
+		</script>
+		
+		
+	</body>
+</html>
