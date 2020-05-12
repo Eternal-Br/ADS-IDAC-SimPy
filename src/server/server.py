@@ -18,6 +18,9 @@ app = Flask(
     template_folder = parent_dir + "/client/templates"
     )
 
+app.jinja_env.auto_reload = True
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
 data0 = [
     {'name': 'root', 'value': 10086,'children':[
         {'name': 'A', 'value': 1, 'children': [{'name': 'C', 'value': 3}, {'name': 'D', 'value': 4}]}, 
