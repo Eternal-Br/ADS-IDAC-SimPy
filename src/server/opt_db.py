@@ -4,7 +4,7 @@
 
 import mysql.connector
 # import mysql.connector.pooling
-import json
+# import json
 
 # 测试数据
 data0 = {"data": [{"name": "root", "value": 0}]}
@@ -25,6 +25,46 @@ def link_mysql(db="idac"):
     )
     return mydb
     pass
+
+
+# --------------------------------------------------------
+""" 
+创建数据库之后初始化数据数据表 谨慎操作
+如果您已经建立了数据库和数据表，则无需此操作 
+此操作用于完全没有建立数据库和数据表的用户
+注意：您仍需要手动创建数据库 新建用户 并为之分配此数据库的相关权限
+
+在调用 init_mysql() 之前，您应当在root用户下执行下列操作：
+1. 创建新的数据库 idac 
+2. 创建新用户 名：user1 密码：hello
+3. 为用户 user1 分配 idac 数据库相关权限 
+
+在此之后调用 init_mysql() 此函数会自动向数据库中添加数据表并设置各个字段的类型，
+init_mysql() 的默认参数 db='idac' 一般您无法修改即可，除非您特别指定了别的数据库进行连接。
+"""
+def init_mysql(db='idac'):
+    mydb = mysql.connector.connect(
+        host='127.0.0.1',
+        port = 3306,
+        user='user1',
+        passwd='hello',
+        database = db,
+        charset = 'utf8'
+    )
+    cursor = mydb.cursor()
+    sql1 = "CREATE TABLE sim_tree (TREEID VARCHAR (64) PRIMARY KEY, data MEDIUMTEXT)"
+    sql2 = "CREATE TABLE sim_vm (VMID VARCHAR (64) PRIMARY KEY, data MEDIUMTEXT)"
+    sql3 = "CREATE TABLE voimg (imgID VARCHAR (64) PRIMARY KEY, VMID VARCHAR (64), data MEDIUMBLOB)"
+    cursor.execute(sql1)
+    cursor.execute(sql2)
+    cursor.execute(sql3)
+    mydb.close()  # 关闭数据库连接
+    print("init mysql on database '{}' succeed, created 3 tables.".format(db))
+
+# --------------------------------------------------------
+
+
+
 
 
 def insert_into_simtree(TREEID, data):
@@ -138,6 +178,7 @@ def select_from_voimg(imgID):
     return data
 
 # print('latest treeid: ', select_lastest_tree())
+# init_mysql(db='aa')
 
 # ---------------------------------------------------------------
 # Old method
