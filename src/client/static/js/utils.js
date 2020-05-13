@@ -52,7 +52,7 @@ $("#testDynamicImg").click(function(event) {
 // 获取最新仿真树
 $("#getSimTree").click(function(event) {
 	// 先清理掉当前的绘图PolyLine
-	map.clearOverlays();
+	// map.clearOverlays();
 	// var treeid = "Tree2004022208017821";
 	// var treeid = "Tree2004022316511498";
 	// treeUrl = "/tree/" + treeid;
