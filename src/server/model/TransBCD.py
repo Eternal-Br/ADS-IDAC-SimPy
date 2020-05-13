@@ -1,7 +1,7 @@
 """
 Trans Between Coordinate and Distance 
-提供精度差、纬度差转化为距离的函数
-提供距离转化为精度差、纬度差的函数
+提供经度差、纬度差转化为距离的函数
+提供距离转化为经度差、纬度差的函数
 """
 from numpy import cos, pi
 
