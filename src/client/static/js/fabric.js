@@ -16,20 +16,23 @@
     canvas.renderAll();
   });
 
-  fabric.Image.fromURL('../static/res/ship1.png', function(img) {
+  fabric.Image.fromURL('../static/res/ship/ship.png', function(img) {
 
-    canvas.add(img.set({ left: 125, top: 300, angle: 60 }).scale(0.75));
+    // var ang = Math.asin(185/875);
+
+    canvas.add(img.set({ left: 15, top: 200, angle: -30 }).scale(0.15));
     function animate() {
-        img.animate('left', img.left === 125 ? 875 : 125, {
-                duration: 1000,
+        img.animate('left', img.left === 15 ? 875 : 15, {
+                duration: 5000,
                 // easing: fabric.util.ease.easeInElastic
         });
-        img.animate('top', img.get('top') === 300 ? '10' : '300', {
-            duration: 1000,
-            onChange: canvas.renderAll.bind(canvas),
+        img.animate('top', img.get('top') === 200 ? 25 : 200, {
+            duration: 5000,
+            // onChange: canvas.renderAll.bind(canvas),
             // onComplete: animate
         });
     }
     animate();
   });
+
 })();
