@@ -6,7 +6,7 @@ Maritime ADS-IDAC system is developed by Python.
 
 # 系统开发架构
 
-![系统架构](https://gitee.com/Eternal-Br/pic-bed/blob/master/ads-idac/Framework - 副本.png)
+![系统架构](https://s1.ax1x.com/2020/05/13/YwJzLQ.png)
 
 ## 如何使用本系统
 1. 您的计算机系统需要安装Python 3 (3.6或者更高的版本，默认安装带有相应版本的pip)，并配置好Python 和 pip的环境变量。
