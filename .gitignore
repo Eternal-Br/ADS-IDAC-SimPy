@@ -639,7 +639,10 @@ src/test/test_flask/templates/wrap_8_admin-wrap/html/pages-error-404.html
 src/test/test_flask/templates/wrap_8_admin-wrap/html/pages-profile.html
 src/test/test_flask/templates/wrap_8_admin-wrap/html/table-basic.html
 .idea/ADS-IDAC-SimPy.iml
+.idea/ADS-IDAC.iml
+.idea/other.xml
 .idea/encodings.xml
+.idea/inspectionProfiles/Project_Default.xml
 .idea/misc.xml
 .idea/modules.xml
 .idea/vcs.xml
