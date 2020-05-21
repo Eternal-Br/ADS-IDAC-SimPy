@@ -35,7 +35,7 @@ IDAC: The Information, Decision, and Action in a Crew context cognitive model.
 8. 启动服务器，在浏览器中查看。
 
  ## How to use this system
- 1. Your need to install Python 3 (version 3.6 or higher, with the corresponding version of pip installed by default)  on your computer, and configure the environment variables of Python and pip.
+ 1. You need to install Python 3 (version 3.6 or higher, with the corresponding version of pip installed by default)  on your computer, and configure the environment variables of Python and pip.
 
 2. Use this command *pip install -r requirements.txt* in the project directory to install the dependencies. If the installation fails, or a certain dependency is missing during installation and use, you need to use *python -m pip install [packagename]* to install it manually.
 
