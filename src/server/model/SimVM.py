@@ -15,6 +15,7 @@ sys.path.append("..")
 import math, random, time, copy, uuid, threading
 import CPA, TransBCD, DrawVoAreas, opt_db
 import HumanActivity as HA
+import CreateEncounterSituation
 
 class SimShip:
     # 仿真船舶决策类，实现一步决策
@@ -331,7 +332,11 @@ class SimVM:
         pass
 
     def Run(self, initStatus4DrawLines, Times = 0):
-        self.__SimData.append(initStatus4DrawLines) # 先将上一次仿真的结束状态添加到状态列表
+        if initStatus4DrawLines == 'random':
+            #TODO
+            pass
+        else:
+            self.__SimData.append(initStatus4DrawLines) # 先将上一次仿真的结束状态添加到状态列表
         # 调用上面的函数，存储图片数据，返回图片的ID
         iimgID = self.StoreVOImgDataAndAddID2ShipStatus()
         # 目前只有主船决策，两艘船的VOImg 图一样，向每一艘船中添加VOImgID
@@ -353,7 +358,7 @@ class SimVM:
 
 
 # 这个函数用于外部调用
-def RunVM(initData, initStatus4DrawLines, interval = 0.2, timeRatio = 100, runTimes = -1):
+def RunVM(initData, initStatus4DrawLines='random', interval = 0.2, timeRatio = 100, runTimes = -1):
     """ 
     : initData: data that init ships in this VM, and initData looks like :
     initData = {
@@ -375,15 +380,23 @@ def RunVM(initData, initStatus4DrawLines, interval = 0.2, timeRatio = 100, runTi
     GenVMID = time.strftime("%y%m%d%H%M%S") + str(random.randint(1000, 9999))
     print("VMID: ", GenVMID)
     VM = SimVM(id = GenVMID, interval = interval, timeratio = timeRatio)
-    VM.addShip(
-        ShipID = initData["ship0"]["ShipID"], 
-        Tick = initData["ship0"]["Tick"],
-        Lon = initData["ship0"]["Lon"],
-        Lat = initData["ship0"]["Lat"],
-        Speed = initData["ship0"]["Speed"],
-        Heading = initData["ship0"]["Heading"]
-    ) # 主船
-    VM.addShip(ShipID = initData["ship1"]["ShipID"], Tick = initData["ship1"]["Tick"], Lon = initData["ship1"]["Lon"], Lat = initData["ship1"]["Lat"], Speed = initData["ship1"]["Speed"], Heading = initData["ship1"]["Heading"]) # 目标船，客船
+
+    if initStatus4DrawLines == 'random':
+        n_ships = 2
+        pos, course, speed = CreateEncounterSituation.Create(n_ships)
+        for i in range(n_ships):
+            VM.addShip(ShipID='STRI'+'-{}'.format(i), Lon=pos[i][0], Lat=pos[i][1], Speed=speed[i], Heading=course[i])
+    else: 
+        VM.addShip(
+            ShipID = initData["ship0"]["ShipID"], 
+            Tick = initData["ship0"]["Tick"],
+            Lon = initData["ship0"]["Lon"],
+            Lat = initData["ship0"]["Lat"],
+            Speed = initData["ship0"]["Speed"],
+            Heading = initData["ship0"]["Heading"]
+        ) # 主船
+        VM.addShip(ShipID = initData["ship1"]["ShipID"], Tick = initData["ship1"]["Tick"], Lon = initData["ship1"]["Lon"], Lat = initData["ship1"]["Lat"], Speed = initData["ship1"]["Speed"], Heading = initData["ship1"]["Heading"]) # 目标船，客船
+    
     VM.Run(initStatus4DrawLines, runTimes)
     # VMData = {"VMID": VM.id, "SimData": VM.GetSimData(), "NextStepData": VM.GetNextStepData(), "MET": VM.GetMetFlag()}
     # print('\nVMData: ', VMData)
@@ -398,6 +411,25 @@ def SimTest():
     VM = SimVM(id = GenVMID, interval = 0.2, timeratio = 100)
     VM.addShip(ShipID='10086', Lon=123, Lat=35.01, Speed=10, Heading=135) # 主船
     VM.addShip(ShipID='10010', Lon=123.1, Lat=35, Speed=7, Heading=270) # 目标船，客船
+    VM.Run(8)
+    VMData = {"VMID": VM.id, "SimData": VM.GetSimData(), "NextStepData": VM.GetNextStepData(), "MET": VM.GetMetFlag()}
+    print('\nVMData: ', VMData)
+
+
+# 这个函数用于内部测试随机生成初始条件情况下的仿真
+def SimTestRandomInit():
+    GenVMID = time.strftime("%y%m%d%H%M%S") + str(random.randint(1000, 9999))
+    print("VMID: ", GenVMID)
+    VM = SimVM(id = GenVMID, interval = 0.2, timeratio = 100)
+    n_ships = 2
+    pos, course, speed = CreateEncounterSituation.Create(n_ships)
+    # print(
+    #     pos, type(pos), type(pos[0]), '\n', 
+    #     course, type(course), '\n', 
+    #     speed, type(speed), '\n'
+    # )
+    for i in range(n_ships):
+        VM.addShip(ShipID='STRI'+'-{}'.format(i), Lon=pos[i][0], Lat=pos[i][1], Speed=speed[i], Heading=course[i])
     VM.Run(8)
     VMData = {"VMID": VM.id, "SimData": VM.GetSimData(), "NextStepData": VM.GetNextStepData(), "MET": VM.GetMetFlag()}
     print('\nVMData: ', VMData)
@@ -424,9 +456,10 @@ def SimTest():
 #         pass
 
 
-# def main():
-#     SimTest()
-#     pass
+def main():
+    SimTest()
+    # SimTestRandomInit()
+    pass
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()

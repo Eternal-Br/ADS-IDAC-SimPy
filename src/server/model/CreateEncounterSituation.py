@@ -261,7 +261,8 @@ def CalMinDistance(pos):#Calculate the minimum distance between the ships
                 d_min = d_temp
     return d_min
 
-def CreateEncounterSituation(n_ships):   
+# def CreateEncounterSituation(n_ships):   
+def Create(n_ships):   
     pos = [] #The array that stores the positions of the encounter ships
     course = []#The array that stores the courses of the encounter ships
     speed = []#The array that stores the speeds of the encounter ships
@@ -273,7 +274,7 @@ def CreateEncounterSituation(n_ships):
         pos.append(pos_temp)
         course.append(course_temp)
         speed.append(speed_temp)
-    
+    # print('maxspeed: ', max(speed)*2)
     t = D_MIN / (max(speed)*2)
     D_temp = random.uniform(5,6)*1852#The minimum distance between the shipss in the initial stage
     D_min = 0
@@ -284,8 +285,18 @@ def CreateEncounterSituation(n_ships):
                               pos[i][1] - t * speed[i] * np.cos(course[i] * np.pi/180)])
         D_min = CalMinDistance(pos)
 
+    pos = [pos[0].tolist(), pos[1].tolist()]
+    course = [course[0].tolist(), course[1].tolist()]
+    speed = [speed[0].tolist(), speed[1].tolist()]
+    # print(
+    #     pos, type(pos), type(pos[0]), '\n', 
+    #     course, type(course), '\n', 
+    #     speed, type(speed), '\n'
+    # )
     return pos, course, speed
 
+# Create(2)
+'''
 def plot_situation(pos, course, speed):
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -305,6 +316,7 @@ ship_list = []
 for i in range(n_ships):
     ship_temp = Ship(pos[i][0], pos[i][1],speed[i],course[i])
     ship_list.append(ship_temp)
+    print(f'pos[{i}]: ', pos[i])
 
 ship_list[0].determin_status(ship_list[1])
 ship_list[1].determin_status(ship_list[0])
@@ -353,7 +365,8 @@ for i in range(len(pos1)):
     ax.cla()   # 清除键
     plt.plot(x1, y1, '-')
     plt.plot(x2, y2, '-')
-    plt.pause(0.1)
+    plt.pause(0.01)
 #fig, ax = plt.subplots()
 #plt.plot(pos1[:,0],pos1[:,1],'-')
 #plt.plot(pos2[:,0],pos2[:,1],'--')
+'''
