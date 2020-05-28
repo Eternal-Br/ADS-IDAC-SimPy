@@ -3,13 +3,19 @@ var map = new BMap.Map("map"); // 创建Map实例
 map.centerAndZoom(new BMap.Point(123.06, 31), 14); // 初始化地图,设置中心点坐标和地图级别
 map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
 
-let shipIcon1 = new BMap.Icon("/static/res/ship/freighter_min.png", new BMap.Size(150, 25));
-let ship1 = new BMap.Marker(new BMap.Point(0, 0),{icon:shipIcon1});
-map.addOverlay(ship1);
+let ship1,ship2;
 
-let shipIcon2 = new BMap.Icon("/static/res/ship/ship1_min_left.png", new BMap.Size(50, 50));
-let ship2 = new BMap.Marker(new BMap.Point(0, 0),{icon:shipIcon2});
-map.addOverlay(ship2);
+init();
+
+function init(){
+    let shipIcon1 = new BMap.Icon("/static/res/ship/freighter_min.png", new BMap.Size(150, 25));
+    ship1 = new BMap.Marker(new BMap.Point(0, 0),{icon:shipIcon1});
+    map.addOverlay(ship1);
+
+    let shipIcon2 = new BMap.Icon("/static/res/ship/ship1_min_left.png", new BMap.Size(50, 50));
+    ship2 = new BMap.Marker(new BMap.Point(0, 0),{icon:shipIcon2});
+    map.addOverlay(ship2);
+}
 
 function my_add_polyline(pois){
 	var polyline = new BMap.Polyline(pois, {
@@ -23,6 +29,9 @@ function my_add_polyline(pois){
 }
 
 function moveShip(shipNum,point,rotation){
+    if(null === ship1.Bc &&  null === ship2.Bc){
+        init();
+    }
 	if(0=== shipNum){
 		ship1.setPosition(point);
 		ship1.setRotation(rotation-90);
