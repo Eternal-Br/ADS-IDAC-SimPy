@@ -1,5 +1,5 @@
 // 百度地图API功能
-var map = new BMap.Map("map"); // 创建Map实例
+let map = new BMap.Map("map"); // 创建Map实例
 map.centerAndZoom(new BMap.Point(123.06, 31), 14); // 初始化地图,设置中心点坐标和地图级别
 map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
 
@@ -18,9 +18,7 @@ function init(){
 }
 
 function my_add_polyline(pois){
-	var polyline = new BMap.Polyline(pois, {
-		enableEditing: false, //是否启用线编辑，默认为false
-		enableClicking: true, //是否响应点击事件，默认为true
+	let polyline = new BMap.Polyline(pois, {
 		strokeColor:"blue",
 		strokeWeight: '1', //折线的宽度，以像素为单位
 		strokeOpacity: 0.8, //折线的透明度，取值范围0 - 1
