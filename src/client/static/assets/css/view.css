@@ -1,0 +1,96 @@
+body{
+	margin: 0;
+	background-color: #ffffff;
+}
+
+.left {
+    float: left;
+    width: 20%;
+	width:260px;
+    height: 100%;
+    /*background-color: red;*/
+}
+.right {
+    margin-left: 265px;
+	height: 100%;
+    /*background-color: blue;*/
+}
+
+#title{
+	width: 100%;
+	height: 50px;
+	top: 0;
+	left: 0;
+	 /*background-color: #007EE5;*/
+	font-family: "幼圆";
+	font-size: 25px;
+	color: #000000;
+	border-style:solid;
+    border-width:2px;
+	box-shadow:2px 2px 5px #000;
+}
+
+#dashboard {
+	width: 100%;
+	min-width:255px;
+	top: 5px;
+	left: 0;
+	background-color: #AEDCFC;
+	box-shadow:2px 2px 5px #000;
+}
+
+#dashboard .grid{
+	display: grid;
+    grid-template-columns: 30% 70%;
+    max-width: 100%;
+}
+
+.cmdbox{
+	/* width: 100%; */
+	height: 25%;
+	/* display: flex; */
+	/* float: top; */
+	background-color: #aaff7f;
+}
+
+#vo{
+	width: 100%;
+	min-width:255px;
+	height: 255px;
+	top: 5px;
+	left: 0;
+	/*background-color: #d0e7fa;*/
+	box-shadow:2px 2px 5px #000;
+}
+.box{
+	width: 100%;
+	height: auto;
+}
+.box img {
+	width: 100%;
+	height:100%;
+	/* background-color: #d0e7fa; */
+	   
+}
+
+#tree{
+	width: 100%;
+	height: 45%;
+	top: 0;
+	right: 0;
+	background-color: #d7ffcb;
+	box-shadow:2px 2px 5px #000;
+}
+
+#map{
+	width: 100%;
+	height: 55%;
+	top: 0;
+	right: 0;
+	box-shadow:2px 2px 5px #000;
+	/* background-color: #028EE1; */
+}
+
+/* 解决窗口抖动的问题 */
+html, body {height:100%;overflow:auto;margin: 0;}
+html{overflow-y:scroll;}
