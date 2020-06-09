@@ -157,7 +157,7 @@
                     </a>
               </div>
               <div><button type="button" id="clearPolyline" class="btn btn-primary">清除绘图</button></div>
-              <div><button type="button" id="charts" class="btn btn-primary">显示表格</button></div>
+              <div><button type="button" id="charts" class="btn btn-primary" data-toggle="modal" data-target="#myModal">显示表格</button></div>
               <div><button type="button" id="getSimTree" class="btn btn-primary">获取最新仿真树</button></div>
           </div>
           <div id="vo">
@@ -170,9 +170,25 @@
           <div id="tree">tree img</div>
 		  <div id="map"></div>
       </div>
-      <form>
-
-      </form>
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body…</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
   </section>
 
   <div class="credits">
