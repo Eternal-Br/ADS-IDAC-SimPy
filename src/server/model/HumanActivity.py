@@ -101,6 +101,7 @@ def OOW(pos1, heading1, speed1, pos2, heading2, speed2):
     DCPA = CPA.ComputeDCPA(pos1, heading1, speed1, pos2, heading2, speed2)
     TCPA = CPA.ComputeTCPA(pos1, heading1, speed1, pos2, heading2, speed2)
     MET = 0
+    FLAG = 0
     if TCPA < 0:
         # 两船已经错过，或者已经碰撞
         # 反馈标志，将使得全局虚拟机结束
@@ -142,7 +143,8 @@ def OOW(pos1, heading1, speed1, pos2, heading2, speed2):
         # PrAlert = (RiskCurrent-RiskThreshold)/RiskCurrent
         print("PrAlert: ", PrAlert)
         # Master做出了决策
-        DeciProb["FLAG"] = 1 # 添加一个键值对 标识已经做出决策
+        FLAG = 1
+        DeciProb["FLAG"] = FLAG # 添加一个键值对 标识已经做出决策
         DeciProb["MET"] = MET # 添加一个键值对 标识是否汇遇
         # 船将直行的概率=当前的概率+ Master未决策的概率
         DeciProb["GoHead"] = DeciProb["GoHead"] * PrAlert + 1-PrAlert
@@ -151,11 +153,19 @@ def OOW(pos1, heading1, speed1, pos2, heading2, speed2):
     else:
         PrAlert = 0
         # Master没有做出决策，船将直行
-        DeciProb["FLAG"] = 0
+        FLAG = 0
+        DeciProb["FLAG"] = FLAG
         DeciProb["MET"] = MET
         # DeciProb["GoHead"] = 1
         # DeciProb["TurnLeft"] = 0
         # DeciProb["TurnRight"] = 0
+    DeciProb['message'] = {
+        'DCPA': DCPA,
+        'TCPA': TCPA,
+        'PrAlert': PrAlert,
+        'RiskCurrent': RiskCurrent,
+        'RiskThreshold': RiskThreshold
+    }
 
     return DeciProb
 

@@ -321,6 +321,11 @@ for i in range(n_ships):
 ship_list[0].determin_status(ship_list[1])
 ship_list[1].determin_status(ship_list[0])
 
+# 2020年6月4日 21点： 张老师说：
+# calculate_rewards(0,200, ship_temp)
+# 这个地方改成200，三个地方都改，船舶的转向次数就会减少，没有出现一下左转一下右转的情况了
+# 就相当于往前预测200s，之前是往前预测100s
+
 #r_left  = ship_list[0].calculate_rewards(5, 100, ship_list[1])
 #print('reward = ',r_left)
 

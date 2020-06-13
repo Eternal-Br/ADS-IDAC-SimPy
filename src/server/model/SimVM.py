@@ -145,6 +145,7 @@ class SimVM:
         self.__METFlag = 0 # 标识是否已经相遇，相遇则此虚拟机停止运行
         self.__SimData = []
         self.__NextStepData = {}
+        self.DeciResult = {}
         # 定义和启动VM线程
 
     def GetNextStepData(self):
@@ -204,6 +205,7 @@ class SimVM:
         # print("请注意下面进入决策引擎的数据和数量，正常情况列表中应该只有2条数据: ")
         # print(thisShipStatus, '\n')
         DeciResult = HA.ProbDeciEngie(thisShipStatus)
+        # print(DeciResult)
         self.__SimData.append(self.GetShipStatus())
         print("FLAG: ", DeciResult["FLAG"], "\n")
         return DeciResult
@@ -253,6 +255,7 @@ class SimVM:
                 for ship in self.SimShipRegistered:
                     ship.VOImgID = imgID # 向每一艘船中添加VOImgID
                 thisDeciResult = self.RunOneTime() # 更新之后的
+                self.DeciResult = copy.deepcopy(thisDeciResult)
                 self.__METFlag = thisDeciResult["MET"]
                 if self.__METFlag == 1:
                     self.Stop()
@@ -412,7 +415,8 @@ def SimTest():
     VM.addShip(ShipID='10086', Lon=123, Lat=35.01, Speed=10, Heading=135) # 主船
     VM.addShip(ShipID='10010', Lon=123.1, Lat=35, Speed=7, Heading=270) # 目标船，客船
     VM.Run(8)
-    VMData = {"VMID": VM.id, "SimData": VM.GetSimData(), "NextStepData": VM.GetNextStepData(), "MET": VM.GetMetFlag()}
+    # VMData = {"VMID": VM.id, "SimData": VM.GetSimData(), "NextStepData": VM.GetNextStepData(), "MET": VM.GetMetFlag()}
+    VMData = {"VMID": VM.id, "SimData": VM.GetSimData(), "NextStepData": VM.GetNextStepData(), "MET": VM.GetMetFlag(), 'Message': VM.Message}
     print('\nVMData: ', VMData)
 
 
