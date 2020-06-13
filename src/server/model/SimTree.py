@@ -96,7 +96,8 @@ def SimTree():
 
         VMInitData, initStatus4DrawLines = GetInitData(data)
         VM = SimVM.RunVM(VMInitData, initStatus4DrawLines, interval = 0, timeRatio = 200, runTimes = 32)
-        Data = {"VMID": VM.id, "SimData": VM.GetSimData(), "NextStepData": VM.GetNextStepData(), "MET": VM.GetMetFlag()}
+        # Data = {"VMID": VM.id, "SimData": VM.GetSimData(), "NextStepData": VM.GetNextStepData(), "MET": VM.GetMetFlag()}
+        Data = {"VMID": VM.id, "SimData": VM.GetSimData(), "NextStepData": VM.GetNextStepData(), "MET": VM.GetMetFlag(), "DeciResult": VM.DeciResult}
 
         # tree.create_node(identifier=Data["VMID"], parent=parent)
         tree.create_node(identifier=Data["VMID"], parent=parent)
