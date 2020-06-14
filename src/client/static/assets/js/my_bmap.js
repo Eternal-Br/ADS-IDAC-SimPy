@@ -1,7 +1,7 @@
 // 百度地图API功能
 let map,ship1,ship2;
 
-function initMap(){
+$(function(){
 	map = new BMap.Map("map"); // 创建Map实例
 	map.centerAndZoom(new BMap.Point(123.06, 31), 14); // 初始化地图,设置中心点坐标和地图级别
 	map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
@@ -12,7 +12,7 @@ function initMap(){
     let shipIcon2 = new BMap.Icon("/static/res/ship/freighter2_min.png", new BMap.Size(105, 25));
     ship2 = new BMap.Marker(new BMap.Point(0, 0),{icon:shipIcon2});
     map.addOverlay(ship2);
-}
+})
 
 function my_add_polyline(pois){
 	let polyline = new BMap.Polyline(pois, {

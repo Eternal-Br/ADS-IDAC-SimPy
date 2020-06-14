@@ -61,7 +61,7 @@ function animation(SimData) {
 				}
 				shipPointList.push(pointList);
 			}
-			for(let i=0;i<pointSize;i++){
+			for(let i=0;i<pointSize-1;i++){
 				for(let ship = 0;ship< shipNum;ship++) {
 					(function(ship,pointList,timeOut,i,rotation){
 					setTimeout(()=>{
@@ -109,6 +109,47 @@ function getVMData(VMID){
 		dataType:"json",
 		success:function(data){
 			let SimData = data.SimData;
+			let deciResult = data.DeciResult;
+			$("body").translucent({
+				titleGroundColor:"#5396BA",
+				backgroundColor:"#ffffff",
+				titleFontColor:"#ffffff",
+				titleFontSize:14,
+				opacity:1,
+				zIndex:100,
+				textHtml:'<div>是否汇遇：<span id="met"></span></div>'+
+					     '<div>是否决策：<span id="deci"></span></div>'+
+					     '<div>GoHead:<span id="GoHead"></span></div>'+
+						 '<div>TurnLeft:<span id="TurnLeft"></span></div>'+
+						 '<div>TurnRight:<span id="TurnRight"></span></div>'+
+					     '<div>PrAlert:<span id="prAlert"></span></div>'+
+				   		 '<div>RiskCurrent:<span id="RiskCurrent"></span></div>'+
+						 '<div>RiskThreshold:<span id="RiskThreshold"></span></div>',
+				close:function ($dom) {
+//	            	alert("确定要关闭吗？")
+				}
+			});
+			if(0 === deciResult.MET){
+				$("#met").text("未相遇");
+			}else if(1 === deciResult.MET){
+				$("#met").text("相遇");
+			}
+
+			if(1 === deciResult.FLAG){
+				$("#deci").text("已决策");
+				$("#GoHead").text(deciResult.GoHead);
+				$("#TurnLeft").text(deciResult.TurnLeft);
+				$("#TurnRight").text(deciResult.TurnRight);
+			}else{
+				$("#deci").text("未决策");
+				$("#GoHead").text(0);
+				$("#TurnLeft").text(0);
+				$("#TurnRight").text(0);
+			}
+
+			$("#prAlert").text(deciResult.message.PrAlert);
+			$("#RiskCurrent").text(deciResult.message.RiskCurrent);
+			$("#RiskThreshold").text(deciResult.message.RiskThreshold);
 			animation(SimData);
 		},
 		error:function(xhr,type,errorThrown){

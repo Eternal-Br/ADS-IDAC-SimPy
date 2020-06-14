@@ -14,7 +14,7 @@
 
         if (target == '#header') {
           $('#header').removeClass('header-top');
-          return;
+          return false;
         }
 
         if (!$('#header').hasClass('header-top')) {

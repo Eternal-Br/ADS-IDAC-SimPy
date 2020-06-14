@@ -1,4 +1,22 @@
 let ec_tree;
+
+$(function(){
+	let _iframe = window.parent;
+	let _div =_iframe.document.getElementById('main');
+	let doc = _div.contentWindow.document;
+	let tr = doc.getElementById('tree');
+	ec_tree = echarts.init(tr);
+	get_tree();
+	// Echarts树 结点点击事件
+	ec_tree.on('click', function (params) {
+		// 控制台打印数据的名称
+		$('#dataId').attr('value', params.value);
+		var vmid = params.value;
+		// var vmid = "2004022208011387";
+		getVMData(vmid);
+	});
+})
+
 // 鼠标点击事件放在utiLs.js中
 let mydata = [{
 	'name': 'root',
@@ -48,21 +66,6 @@ let ec_tree_option = {
 		animationDuration: 550,
 		animationDurationUpdate: 750
 	}]
-}
-
-function initTree(){
-	ec_tree = echarts.init(document.getElementById('tree'));
-
-	// Echarts树 结点点击事件
-	ec_tree.on('click', function (params) {
-		// 控制台打印数据的名称
-		$('#dataId').attr('value', params.value);
-		var vmid = params.value;
-		// var vmid = "2004022208011387";
-		getVMData(vmid);
-	});
-
-	get_tree();
 }
 
 function get_tree(){

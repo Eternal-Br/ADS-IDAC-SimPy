@@ -8,14 +8,17 @@
     <script src="../static/assets/vendor/jquery/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/echarts/4.7.0/echarts.min.js"></script>
     <!--引入百度地图的jssdk，这里需要使用你在百度地图开发者平台申请的 ak-->
-{#    <script src="http://api.map.baidu.com/api?v=2.0&ak=S9AqsqjyKkt9SR4Sn7dGh5ESA7vdyrzg"></script>#}
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=S9AqsqjyKkt9SR4Sn7dGh5ESA7vdyrzg"></script>
     <script src="../static/assets/js/ec_tree.js"></script>
     <script src="../static/assets/js/my_bmap.js"></script>
+    <script src="../static/assets/js/utils.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/assets/translucent/style.css"/>
+	<script src="../static/assets/js/echarts.min.js"></script>
+    <script src="../static/assets/translucent/jquery-translucent.js"></script>
 </head>
 
 <body>
-    <div>
-      <div class="left">
+    <div class="left">
           <div id="title"><h3>演示系统</h3></div>
           <div id="dashboard">
               <div class = "grid">
@@ -38,11 +41,10 @@
               </div>
           </div>
       </div>
-      <div class="right">
+    <div class="right">
           <div id="tree">tree img</div>
 		  <div id="map"></div>
       </div>
-  </div>
 </body>
 
 </html>
