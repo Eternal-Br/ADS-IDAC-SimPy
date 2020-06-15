@@ -54,6 +54,14 @@ def index():
 def index_en():
     return render_template("view-en.html")
 
+# 网站入口
+@app.route("/index")
+def site_index():
+    return render_template("index.html")
+
+@app.route("/demo")
+def site_demo():
+    return render_template("demonstrate.html")
 
 # 初始加载的树数据，可删除之
 @app.route("/tree")
