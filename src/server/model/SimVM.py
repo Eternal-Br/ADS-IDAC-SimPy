@@ -30,6 +30,8 @@ class SimShip:
         self.interval = TimeRatio #一次离散步长所对应的时间间隔
         self.tick     = Tick      #当前虚拟时钟
         self.VOImgID = None
+        self.DCPA  = -1
+        self.TCPA = -1
         pass
 
     def __RunOneStep(self):
@@ -120,6 +122,8 @@ class SimShip:
         shipStatus['heading'] = self.heading
         shipStatus['interval'] = self.interval
         shipStatus['VOImgID'] = self.VOImgID
+        shipStatus['DCPA'] = self.DCPA
+        shipStatus['TCPA']  = self.TCPA
         return shipStatus
 
 class SimVM:
@@ -252,9 +256,14 @@ class SimVM:
                 imgID = self.StoreVOImgDataAndAddID2ShipStatus()
                 # 目前只有主船决策，两艘船的VOImg 图一样，向每一艘船中添加VOImgID
                 # 更好的方案应该是...不，不是...>这玩意儿就应该在虚拟机层面操作.
+
+                thisDeciResult = self.RunOneTime() # 更新之后的
                 for ship in self.SimShipRegistered:
                     ship.VOImgID = imgID # 向每一艘船中添加VOImgID
-                thisDeciResult = self.RunOneTime() # 更新之后的
+                    # 加入DCPA/TCPA的数据回传
+                    ship.DCPA = thisDeciResult['message']['DCPA']
+                    ship.TCPA = thisDeciResult['message']['TCPA']
+
                 self.DeciResult = copy.deepcopy(thisDeciResult)
                 self.__METFlag = thisDeciResult["MET"]
                 if self.__METFlag == 1:
@@ -416,7 +425,7 @@ def SimTest():
     VM.addShip(ShipID='10010', Lon=123.1, Lat=35, Speed=7, Heading=270) # 目标船，客船
     VM.Run(8)
     # VMData = {"VMID": VM.id, "SimData": VM.GetSimData(), "NextStepData": VM.GetNextStepData(), "MET": VM.GetMetFlag()}
-    VMData = {"VMID": VM.id, "SimData": VM.GetSimData(), "NextStepData": VM.GetNextStepData(), "MET": VM.GetMetFlag(), 'Message': VM.Message}
+    VMData = {"VMID": VM.id, "SimData": VM.GetSimData(), "NextStepData": VM.GetNextStepData(), "MET": VM.GetMetFlag(), 'DeciResult': VM.DeciResult}
     print('\nVMData: ', VMData)
 
 
