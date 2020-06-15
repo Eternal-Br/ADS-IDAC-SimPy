@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../static/assets/css/view.css" rel="stylesheet" />
+
+    <script src="../static/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.7.0/echarts.min.js"></script>
+    <!--引入百度地图的jssdk，这里需要使用你在百度地图开发者平台申请的 ak-->
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=S9AqsqjyKkt9SR4Sn7dGh5ESA7vdyrzg"></script>
+    <script src="../static/assets/js/ec_tree.js"></script>
+    <script src="../static/assets/js/my_bmap.js"></script>
+    <script src="../static/assets/js/utils.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/assets/translucent/style.css"/>
+	<script src="../static/assets/js/echarts.min.js"></script>
+    <script src="../static/assets/translucent/jquery-translucent.js"></script>
+</head>
+
+<body>
+    <div class="left">
+          <div id="title"><h3>演示系统</h3></div>
+          <div id="dashboard">
+              <div class = "grid">
+                <div >VMID:</div>
+                <div><input type="text" name="dataId" id="dataId" value="数据未加载..." readonly="readonly"/></div>
+                <div>TreeID:</div>
+                <div><input type="text" name="treeId" id="treeId" value="数据未加载..." readonly="readonly"/></div>
+              </div>
+              <div><a href="/en_version" target="_self">
+                        <button type="button" id="S2E" class="btn btn-primary">Switch to English</button>
+                    </a>
+              </div>
+              <div><button type="button" id="clearPolyline" class="btn btn-primary">清除绘图</button></div>
+              <div><button type="button" id="charts" class="btn btn-primary" data-toggle="modal" data-target="#myModal">显示表格</button></div>
+              <div><button type="button" id="getSimTree" class="btn btn-primary">获取最新仿真树</button></div>
+          </div>
+          <div id="vo">
+              <div class="box">
+                  <img id="voImg" src="../static/res/Figure1.png" alt="VO img"/>
+              </div>
+          </div>
+      </div>
+    <div class="right">
+          <div id="tree">tree img</div>
+		  <div id="map"></div>
+      </div>
+</body>
+
+</html>
