@@ -110,6 +110,7 @@ function getVMData(VMID){
 		success:function(data){
 			let SimData = data.SimData;
 			let deciResult = data.DeciResult;
+			/*----------弹窗数据-------------------*/
 			$("body").translucent({
 				titleGroundColor:"#5396BA",
 				backgroundColor:"#ffffff",
@@ -117,14 +118,14 @@ function getVMData(VMID){
 				titleFontSize:14,
 				opacity:1,
 				zIndex:100,
-				textHtml:'<div>是否汇遇：<span id="met"></span></div>'+
-					     '<div>是否决策：<span id="deci"></span></div>'+
-					     '<div>GoHead:<span id="GoHead"></span></div>'+
-						 '<div>TurnLeft:<span id="TurnLeft"></span></div>'+
-						 '<div>TurnRight:<span id="TurnRight"></span></div>'+
-					     '<div>PrAlert:<span id="prAlert"></span></div>'+
-				   		 '<div>RiskCurrent:<span id="RiskCurrent"></span></div>'+
-						 '<div>RiskThreshold:<span id="RiskThreshold"></span></div>',
+				textHtml:'<div><span style="color:sandybrown">是否汇遇：</span><span id="met" style="color:green"></span></div>'+
+					     '<div><span style="color:sandybrown">是否决策：</span><span id="deci" style="color:green"></span></div>'+
+					     '<div><span style="color:sandybrown">GoHead：</span><span id="GoHead" style="color:green"></span></div>'+
+						 '<div><span style="color:sandybrown">TurnLeft：</span><span id="TurnLeft" style="color:green"></span></div>'+
+						 '<div><span style="color:sandybrown">TurnRight：</span><span id="TurnRight" style="color:green"></span></div>'+
+					     '<div><span style="color:sandybrown">PrAlert：</span><span id="prAlert" style="color:green"></span></div>'+
+				   		 '<div><span style="color:sandybrown">RiskCurrent：</span><span id="RiskCurrent" style="color:green"></span></div>'+
+						 '<div><span style="color:sandybrown">RiskThreshold：</span><span id="RiskThreshold" style="color:green"></span></div>',
 				close:function ($dom) {
 //	            	alert("确定要关闭吗？")
 				}
@@ -150,6 +151,46 @@ function getVMData(VMID){
 			$("#prAlert").text(deciResult.message.PrAlert);
 			$("#RiskCurrent").text(deciResult.message.RiskCurrent);
 			$("#RiskThreshold").text(deciResult.message.RiskThreshold);
+			/*--------------折线图数据------------------*/
+			for(let i = 0;i<SimData.length;i++){
+				for(let j=0;j<SimData[i].length;j++){
+					let flag = 1
+					let node = {}
+					node.time = SimData[i][j].time
+					node.DCPA = SimData[i][j].DCPA
+					node.TCPA = SimData[i][j].TCPA
+					for(let k = 0 ;k<allnode[j].length;k++ ){
+						if(allnode[j][k].time === SimData[i][j].time){
+							allnode[j][k].DCPA = SimData[i][j].DCPA
+							allnode[j][k].TCPA = SimData[i][j].TCPA
+							flag = 0
+						}
+					}
+					if(1 === flag){
+						allnode[j].push(node)
+					}
+				}
+			}
+			let timeList = [],dcpaList1 = [],tcpaList1 = [],dcpaList2 = [],tcpaList2 = [];
+			let dcpaAll = [dcpaList1,dcpaList2];
+			let tcpaAll = [tcpaList1,tcpaList2];
+
+			for(let m = 0;m<allnode.length;m++){
+				for(let l=0;l<allnode[m].length;l++){
+					if(0==m){
+						timeList.push(allnode[m][l].time)
+					}
+					dcpaAll[m].push(allnode[m][l].DCPA)
+					tcpaAll[m].push(allnode[m][l].TCPA)
+				}
+			}
+
+			option.xAxis.data = timeList
+			option.series[0].data = dcpaAll[0]
+			option.series[1].data = tcpaAll[0]
+			option.series[2].data = dcpaAll[1]
+			option.series[3].data = tcpaAll[1]
+			dtpa_chart.setOption(option)
 			animation(SimData);
 		},
 		error:function(xhr,type,errorThrown){

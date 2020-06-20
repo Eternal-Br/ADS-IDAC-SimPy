@@ -19,7 +19,7 @@
 
 <body>
     <div class="left">
-          <div id="title"><h3>演示系统</h3></div>
+          <div id="title" style="text-align: center;padding:10px 0;"><h3 style="margin:0px;">演示系统</h3></div>
           <div id="dashboard">
               <div class = "grid">
                 <div >VMID:</div>
@@ -27,18 +27,22 @@
                 <div>TreeID:</div>
                 <div><input type="text" name="treeId" id="treeId" value="数据未加载..." readonly="readonly"/></div>
               </div>
+              <div>
+                  <button type="button" id="clearPolyline" class="btn btn-primary">清除绘图</button>
+                  <button type="button" id="getSimTree" class="btn btn-primary">获取最新仿真树</button>
+              </div>
               <div><a href="/en_version" target="_self">
                         <button type="button" id="S2E" class="btn btn-primary">Switch to English</button>
                     </a>
               </div>
-              <div><button type="button" id="clearPolyline" class="btn btn-primary">清除绘图</button></div>
-              <div><button type="button" id="charts" class="btn btn-primary" data-toggle="modal" data-target="#myModal">显示表格</button></div>
-              <div><button type="button" id="getSimTree" class="btn btn-primary">获取最新仿真树</button></div>
           </div>
           <div id="vo">
               <div class="box">
                   <img id="voImg" src="../static/res/Figure1.png" alt="VO img"/>
               </div>
+          </div>
+          <div id="chart" class="chart">
+              <div id="dtpa" style="width:100%;height:220px;"></div>
           </div>
       </div>
     <div class="right">

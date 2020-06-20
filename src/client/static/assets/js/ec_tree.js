@@ -1,4 +1,6 @@
-let ec_tree;
+let ec_tree,dtpa_chart;
+let nodeList1 = [],nodeList2 = [];
+let allnode = [nodeList1,nodeList2];
 
 $(function(){
 	let _iframe = window.parent;
@@ -15,6 +17,9 @@ $(function(){
 		// var vmid = "2004022208011387";
 		getVMData(vmid);
 	});
+	let dtpa = doc.getElementById('dtpa');
+	dtpa_chart = echarts.init(dtpa);
+	dtpa_chart.setOption(option);
 })
 
 // 鼠标点击事件放在utiLs.js中
@@ -67,6 +72,63 @@ let ec_tree_option = {
 		animationDurationUpdate: 750
 	}]
 }
+
+let option = {
+    title: {
+        text: '折线图'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['DCPA1', 'TCPA1','DCPA2', 'TCPA2']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: []
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name: 'DCPA1',
+            type: 'line',
+			smooth: true,
+			data: []
+        },
+        {
+            name: 'TCPA1',
+            type: 'line',
+			smooth: true,
+			data: []
+        },
+		 {
+            name: 'DCPA2',
+            type: 'line',
+			smooth: true,
+			data: []
+        },
+        {
+            name: 'TCPA2',
+            type: 'line',
+			smooth: true,
+			data: []
+        }
+    ]
+};
 
 function get_tree(){
 	$.ajax('', {
