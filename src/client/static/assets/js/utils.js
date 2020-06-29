@@ -110,12 +110,14 @@ function getVMData(VMID){
 		success:function(data){
 			let SimData = data.SimData;
 			let deciResult = data.DeciResult;
+			let vmid = data.VMID;
 			/*----------弹窗数据-------------------*/
 			$("body").translucent({
 				titleGroundColor:"#5396BA",
 				backgroundColor:"#ffffff",
 				titleFontColor:"#ffffff",
 				titleFontSize:14,
+				titleText:vmid,
 				opacity:1,
 				zIndex:100,
 				textHtml:'<div><span style="color:sandybrown">是否汇遇：</span><span id="met" style="color:green"></span></div>'+
@@ -153,44 +155,26 @@ function getVMData(VMID){
 			$("#RiskThreshold").text(deciResult.message.RiskThreshold);
 			/*--------------折线图数据------------------*/
 			for(let i = 0;i<SimData.length;i++){
-				for(let j=0;j<SimData[i].length;j++){
-					let flag = 1
-					let node = {}
-					node.time = SimData[i][j].time
-					node.DCPA = SimData[i][j].DCPA
-					node.TCPA = SimData[i][j].TCPA
-					for(let k = 0 ;k<allnode[j].length;k++ ){
-						if(allnode[j][k].time === SimData[i][j].time){
-							allnode[j][k].DCPA = SimData[i][j].DCPA
-							allnode[j][k].TCPA = SimData[i][j].TCPA
-							flag = 0
-						}
-					}
-					if(1 === flag){
-						allnode[j].push(node)
-					}
-				}
+				let node = {}
+				node.time = SimData[i][0].time
+				node.DCPA = SimData[i][0].DCPA
+				node.TCPA = SimData[i][0].TCPA
+				allnode.push(node)
 			}
-			let timeList = [],dcpaList1 = [],tcpaList1 = [],dcpaList2 = [],tcpaList2 = [];
-			let dcpaAll = [dcpaList1,dcpaList2];
-			let tcpaAll = [tcpaList1,tcpaList2];
+			let timeList = [],dcpaList = [],tcpaList = [];
 
-			for(let m = 0;m<allnode.length;m++){
-				for(let l=0;l<allnode[m].length;l++){
-					if(0==m){
-						timeList.push(allnode[m][l].time)
-					}
-					dcpaAll[m].push(allnode[m][l].DCPA)
-					tcpaAll[m].push(allnode[m][l].TCPA)
-				}
+			for(let l=0;l<allnode.length;l++){
+				dcpaList.push(allnode[l].DCPA)
+				tcpaList.push(allnode[l].TCPA)
+				timeList.push(allnode[l].time)
 			}
 
-			option.xAxis.data = timeList
-			option.series[0].data = dcpaAll[0]
-			option.series[1].data = tcpaAll[0]
-			option.series[2].data = dcpaAll[1]
-			option.series[3].data = tcpaAll[1]
-			dtpa_chart.setOption(option)
+			dcpaOption.xAxis.data = timeList
+			dcpaOption.series[0].data = dcpaList
+			tcpaOption.xAxis.data = timeList
+			tcpaOption.series[0].data = tcpaList
+			dcpa_chart.setOption(dcpaOption)
+			tcpa_chart.setOption(tcpaOption)
 			animation(SimData);
 		},
 		error:function(xhr,type,errorThrown){
