@@ -65,7 +65,7 @@ body{
 #vo{
 	width: 100%;
 	min-width:255px;
-	height: 255px;
+	height: 225px;
 	top: 5px;
 	left: 0;
 	/*background-color: #d0e7fa;*/
@@ -91,9 +91,16 @@ body{
 	box-shadow:2px 2px 5px #000;
 }
 
-#map{
+#below{
 	width: 100%;
 	height: 55%;
+	top: 0;
+	right: 0;
+}
+
+#map{
+	width: 100%;
+	height: 100%;
 	top: 0;
 	right: 0;
 	box-shadow:2px 2px 5px #000;

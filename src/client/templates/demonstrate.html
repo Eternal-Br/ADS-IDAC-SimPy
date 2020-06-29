@@ -19,7 +19,7 @@
 
 <body>
     <div class="left">
-          <div id="title"><h3>演示系统</h3></div>
+          <div id="title" style="text-align: center;padding:10px 0;"><h3 style="margin:0px;">演示系统</h3></div>
           <div id="dashboard">
               <div class = "grid">
                 <div >VMID:</div>
@@ -27,13 +27,14 @@
                 <div>TreeID:</div>
                 <div><input type="text" name="treeId" id="treeId" value="数据未加载..." readonly="readonly"/></div>
               </div>
+              <div>
+                  <button type="button" id="clearPolyline" class="btn btn-primary">清除绘图</button>
+                  <button type="button" id="getSimTree" class="btn btn-primary">获取最新仿真树</button>
+              </div>
               <div><a href="/en_version" target="_self">
                         <button type="button" id="S2E" class="btn btn-primary">Switch to English</button>
                     </a>
               </div>
-              <div><button type="button" id="clearPolyline" class="btn btn-primary">清除绘图</button></div>
-              <div><button type="button" id="charts" class="btn btn-primary" data-toggle="modal" data-target="#myModal">显示表格</button></div>
-              <div><button type="button" id="getSimTree" class="btn btn-primary">获取最新仿真树</button></div>
           </div>
           <div id="vo">
               <div class="box">
@@ -43,7 +44,13 @@
       </div>
     <div class="right">
           <div id="tree">tree img</div>
-		  <div id="map"></div>
+          <div id="below">
+              <div stype="position:relative;">
+                 <div id="dcpa" style="position:absolute;width:160px;height:160px;z-index:99;"></div>
+                  <div id="tcpa" style="position:absolute;right:0;width:160px;height:160px;z-index:99;"></div>
+              </div>
+              <div id="map"></div>
+          </div>
       </div>
 </body>
 

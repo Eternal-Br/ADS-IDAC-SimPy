@@ -1,4 +1,4 @@
-let ec_tree;
+let ec_tree,dcpa_chart,tcpa_chart,allnode = [];
 
 $(function(){
 	let _iframe = window.parent;
@@ -15,6 +15,12 @@ $(function(){
 		// var vmid = "2004022208011387";
 		getVMData(vmid);
 	});
+	let dcpa = doc.getElementById('dcpa');
+	let tcpa = doc.getElementById('tcpa');
+	dcpa_chart = echarts.init(dcpa);
+	dcpa_chart.setOption(dcpaOption);
+	tcpa_chart = echarts.init(tcpa);
+	tcpa_chart.setOption(tcpaOption);
 })
 
 // 鼠标点击事件放在utiLs.js中
@@ -67,6 +73,84 @@ let ec_tree_option = {
 		animationDurationUpdate: 750
 	}]
 }
+
+let dcpaOption = {
+    title: {
+        text: '折线图'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['DCPA']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: []
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name: 'DCPA',
+            type: 'line',
+			smooth: true,
+			data: []
+        }
+    ]
+};
+
+let tcpaOption = {
+    title: {
+        text: '折线图'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['TCPA']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: []
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name: 'TCPA',
+            type: 'line',
+			smooth: true,
+			data: []
+        }
+    ]
+};
 
 function get_tree(){
 	$.ajax('', {
