@@ -77,7 +77,7 @@ class Ship(object):
         pos2=np.array([pos_target[0]+speed*np.sin(course * np.pi /180) * t,\
                        pos_target[1]+speed*np.cos(course * np.pi /180) * t])
         DCPA = np.linalg.norm(pos1-pos2)
-        if x*x_2 + y*y_2 > 0: #Own ship is crossing from ahead of target ship
+        if pos[0] * y - pos[1] * y > 0:#cross product, Own ship is crossing from ahead of target ship
             DCPA = -DCPA
         return DCPA
     
@@ -197,7 +197,7 @@ class Ship(object):
         #corrdination transformation, own ship is located at the original point
         lon_temp = Ship.lon - lon_temp
         lat_temp = Ship.lat - lat_temp
-        #coordination rotation in clockwise, own ship is heading the north
+        #coordination rotation in clockwise, after rotation, own ship is heading the north
         lon_t = lon_temp*np.cos(self.course * np.pi / 180)-lat_temp*np.sin(self.course * np.pi / 180)
         lat_t = lon_temp*np.sin(self.course * np.pi / 180)+lat_temp*np.cos(self.course * np.pi / 180)
         theta = np.tan(abs(lon_t / lat_t))
