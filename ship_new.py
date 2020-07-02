@@ -9,7 +9,7 @@ import math
 import CreateEncounterSituation
 import matplotlib.pyplot as plt
 
-
+#AI ship
 class Ship(object): 
     def __init__(self, lon, lat, speed, course):
         super().__init__()
@@ -77,7 +77,7 @@ class Ship(object):
         pos2=np.array([pos_target[0]+speed*np.sin(course * np.pi /180) * t,\
                        pos_target[1]+speed*np.cos(course * np.pi /180) * t])
         DCPA = np.linalg.norm(pos1-pos2)
-        if x*x_2 + y*y_2 > 0:#Own ship is crossing from ahead of target ship
+        if x*x_2 + y*y_2 > 0: #Own ship is crossing from ahead of target ship
             DCPA = -DCPA
         return DCPA
     
@@ -109,11 +109,10 @@ class Ship(object):
                         -x*(y * pos[0] - x * pos[1]) / (x ** 2 + y ** 2)])
 
         d = np.linalg.norm(p_x-pos)  #the distance between two positions
-        TCPA = 0 #initialize
+        
+        TCPA = d / (x**2+y**2)**0.5 
         if x * pos[0]+y * pos[1] <= 0: #The two ships are moving away from each other, TCPA is negative
-            TCPA = -d / (x**2+y**2)**0.5
-        else:#The two ships are approaching each other, TCPA is positive
-            TCPA = d / (x**2+y**2)**0.5
+            TCPA = -TCPA
         return TCPA
 
     def collision_risk(self, Ship):
@@ -175,7 +174,7 @@ class Ship(object):
         TCPA_temp = self.ComputeTCPA(lon_temp, lat_temp, Ship.speed, course_temp)#The TCPA after taking operation
         if TCPA_temp >0:
             if abs(DCPA_temp) < 1000: #Has collision risk
-                r_safe = 0.5 * (DCPA_temp+1000) / 2000
+                r_safe = 0.5 * (DCPA_temp + 1000) / 2000
                 r_course = 0
                 if turning_angle > 0:
                     r_COLREG = 0
@@ -192,6 +191,28 @@ class Ship(object):
         
         return r_safe + r_course + r_COLREG
     
+    def bearing(self, Ship):
+        lon_temp = self.lon.copy()
+        lat_temp = self.lat.copy()
+        #corrdination transformation, own ship is located at the original point
+        lon_temp = Ship.lon - lon_temp
+        lat_temp = Ship.lat - lat_temp
+        #coordination rotation in clockwise, own ship is heading the north
+        lon_t = lon_temp*np.cos(self.course * np.pi / 180)-lat_temp*np.sin(self.course * np.pi / 180)
+        lat_t = lon_temp*np.sin(self.course * np.pi / 180)+lat_temp*np.cos(self.course * np.pi / 180)
+        theta = np.tan(abs(lon_t / lat_t))
+        if lon_t > 0:
+            if lat_t >0:#the first quatile
+                return theta
+            else:#the second quatile
+                return 180 - theta
+        else:
+            if lat_t < 0: # the third quatile
+                return 270 - theta
+            else: #the fourth quatile
+                return 360 - theta
+                
+        
     #用于确定本船的角色，Standon为直航船，Giveway是让路船
     #输入参数Ship为目标船
     def determine_status(self, Ship):
@@ -253,14 +274,14 @@ def ComputeDCPA(x_own, y_own, speed_own, course_own, x_target, y_target, speed, 
 
     d = np.linalg.norm(p_x-pos)  #两个坐标的距离
     t = 0 
-    if x * pos[0]+y * pos[1] > 0: #说明两船逐渐靠近
+    if x * pos[0] + y * pos[1] > 0: #说明两船逐渐靠近
         t = d / (x**2+y**2)**0.5
     pos1=np.array([pos_own[0]+speed_own*np.sin(course_own * np.pi /180) * t,\
                    pos_own[1]+speed_own*np.cos(course_own * np.pi /180) * t])
     pos2=np.array([pos_target[0]+speed*np.sin(course * np.pi /180) * t,\
                    pos_target[1]+speed*np.cos(course * np.pi /180) * t])
     DCPA = np.linalg.norm(pos1-pos2)
-    if x*x_2 + y*y_2 > 0:#Own ship is crossing from ahead of target ship
+    if pos[0] * y - pos[1] * y > 0:#cross product, Own ship is crossing from ahead of target ship
         DCPA = -DCPA
     return DCPA
 
@@ -277,7 +298,7 @@ def plot_situation(pos, course, speed):
                  head_width=40, head_length=200, fc='r', ec='b')
 
 #Initialize the encounter ships
-n_ships = 4 #number of encounter ships
+n_ships = 5 #number of encounter ships
 pos, course, speed = CreateEncounterSituation.CreateEncounterSituation(n_ships)
 
 ship_list = []
@@ -290,8 +311,8 @@ for i in range(n_ships):
         if i is not j:
             ship_list[i].determine_status(ship_list[j])
 
-TIME = 1500 #Simulation time
-pos_ships = np.zeros((TIME,n_ships,2), dtype = np.float)#record the trajectories of the ships
+TIME = 2000 #Simulation time
+pos_ships = np.zeros((TIME,n_ships,2), dtype = np.float) #record the trajectories of the ships
 
 DCPA = np.arange(TIME*n_ships*n_ships).reshape(TIME, n_ships, n_ships)#The DCPA between pairwise ships at each time point
 TCPA = np.arange(TIME*n_ships*n_ships).reshape(TIME, n_ships, n_ships)#The TCPA between pairwise ships at each time point
@@ -354,8 +375,8 @@ ax1 = fig.add_subplot(221) #show the trajectories
 ax2 = fig.add_subplot(222) #show the DCPA between ships
 ax3 = fig.add_subplot(223)
 ax4 = fig.add_subplot(224)
-for time in range(TIME):
-    ax1.cla()   # 清除键
+for time in range(TIME, TIME+1):
+    ax1.cla()   # clear all elements
     for i in range(n_ships):
         pos_x = []
         pos_y = []
