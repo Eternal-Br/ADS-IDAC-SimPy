@@ -110,21 +110,24 @@ function getVMData(VMID){
 		success:function(data){
 			let SimData = data.SimData;
 			let deciResult = data.DeciResult;
+			let vmid = data.VMID;
+			/*----------弹窗数据-------------------*/
 			$("body").translucent({
 				titleGroundColor:"#5396BA",
 				backgroundColor:"#ffffff",
 				titleFontColor:"#ffffff",
 				titleFontSize:14,
+				titleText:vmid,
 				opacity:1,
 				zIndex:100,
-				textHtml:'<div>是否汇遇：<span id="met"></span></div>'+
-					     '<div>是否决策：<span id="deci"></span></div>'+
-					     '<div>GoHead:<span id="GoHead"></span></div>'+
-						 '<div>TurnLeft:<span id="TurnLeft"></span></div>'+
-						 '<div>TurnRight:<span id="TurnRight"></span></div>'+
-					     '<div>PrAlert:<span id="prAlert"></span></div>'+
-				   		 '<div>RiskCurrent:<span id="RiskCurrent"></span></div>'+
-						 '<div>RiskThreshold:<span id="RiskThreshold"></span></div>',
+				textHtml:'<div><span style="color:sandybrown">是否汇遇：</span><span id="met" style="color:green"></span></div>'+
+					     '<div><span style="color:sandybrown">是否决策：</span><span id="deci" style="color:green"></span></div>'+
+					     '<div><span style="color:sandybrown">GoHead：</span><span id="GoHead" style="color:green"></span></div>'+
+						 '<div><span style="color:sandybrown">TurnLeft：</span><span id="TurnLeft" style="color:green"></span></div>'+
+						 '<div><span style="color:sandybrown">TurnRight：</span><span id="TurnRight" style="color:green"></span></div>'+
+					     '<div><span style="color:sandybrown">PrAlert：</span><span id="prAlert" style="color:green"></span></div>'+
+				   		 '<div><span style="color:sandybrown">RiskCurrent：</span><span id="RiskCurrent" style="color:green"></span></div>'+
+						 '<div><span style="color:sandybrown">RiskThreshold：</span><span id="RiskThreshold" style="color:green"></span></div>',
 				close:function ($dom) {
 //	            	alert("确定要关闭吗？")
 				}
@@ -150,6 +153,28 @@ function getVMData(VMID){
 			$("#prAlert").text(deciResult.message.PrAlert);
 			$("#RiskCurrent").text(deciResult.message.RiskCurrent);
 			$("#RiskThreshold").text(deciResult.message.RiskThreshold);
+			/*--------------折线图数据------------------*/
+			for(let i = 0;i<SimData.length;i++){
+				let node = {}
+				node.time = SimData[i][0].time
+				node.DCPA = SimData[i][0].DCPA
+				node.TCPA = SimData[i][0].TCPA
+				allnode.push(node)
+			}
+			let timeList = [],dcpaList = [],tcpaList = [];
+
+			for(let l=0;l<allnode.length;l++){
+				dcpaList.push(allnode[l].DCPA)
+				tcpaList.push(allnode[l].TCPA)
+				timeList.push(allnode[l].time)
+			}
+
+			dcpaOption.xAxis.data = timeList
+			dcpaOption.series[0].data = dcpaList
+			tcpaOption.xAxis.data = timeList
+			tcpaOption.series[0].data = tcpaList
+			dcpa_chart.setOption(dcpaOption)
+			tcpa_chart.setOption(tcpaOption)
 			animation(SimData);
 		},
 		error:function(xhr,type,errorThrown){
