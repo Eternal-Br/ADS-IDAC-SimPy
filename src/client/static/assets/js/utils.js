@@ -12,7 +12,7 @@ $(document).on('click',"#testDynamicImg",function(){
 
 // 获取最新仿真树
 $(document).on("click","#getSimTree",function(){
-	lastestTreeUrl = "/tree/lastest";
+	lastestTreeUrl = "/tree/first";
 	$.ajax('', {
 		url: lastestTreeUrl,
 		dataType:"json",
@@ -111,6 +111,11 @@ function getVMData(VMID){
 			let SimData = data.SimData;
 			let deciResult = data.DeciResult;
 			let vmid = data.VMID;
+			let treeData = data.data;
+			if(null != treeData){
+				ec_tree_option.series[0].data = treeData;
+				ec_tree.setOption(ec_tree_option);
+			}
 			/*----------弹窗数据-------------------*/
 			$("body").translucent({
 				titleGroundColor:"#5396BA",
@@ -138,21 +143,38 @@ function getVMData(VMID){
 				$("#met").text("相遇");
 			}
 
+			let numGoHead = new Number(deciResult.GoHead);
+			let goHead = numGoHead.toFixed(2);
+			let numTrunLeft = new Number(deciResult.TurnLeft);
+			let turnLeft = numTrunLeft.toFixed(2);
+			let numTrunRight = new Number(deciResult.TurnRight);
+			let turnRight = numTrunRight.toFixed(2);
+
 			if(1 === deciResult.FLAG){
 				$("#deci").text("已决策");
-				$("#GoHead").text(deciResult.GoHead);
-				$("#TurnLeft").text(deciResult.TurnLeft);
-				$("#TurnRight").text(deciResult.TurnRight);
+				$("#GoHead").text(goHead);
+				$("#TurnLeft").text(turnLeft);
+				$("#TurnRight").text(turnRight);
 			}else{
 				$("#deci").text("未决策");
-				$("#GoHead").text(0);
-				$("#TurnLeft").text(0);
-				$("#TurnRight").text(0);
+				$("#GoHead").text(0.00);
+				$("#TurnLeft").text(0.00);
+				$("#TurnRight").text(0.00);
 			}
 
-			$("#prAlert").text(deciResult.message.PrAlert);
-			$("#RiskCurrent").text(deciResult.message.RiskCurrent);
-			$("#RiskThreshold").text(deciResult.message.RiskThreshold);
+			let numPrAlert = new Number(deciResult.message.PrAlert);
+			let prAlert = numPrAlert.toFixed(2);
+			let numRiskCurrent = new Number(deciResult.message.RiskCurrent);
+			let riskCurrent = numRiskCurrent.toFixed(2);
+			if(riskCurrent < 0){
+				riskCurrent = 0.00;
+			}
+			let numRiskThreshold = new Number(deciResult.message.RiskThreshold);
+			let riskThreshold = numRiskThreshold.toFixed(2);
+
+			$("#prAlert").text(prAlert);
+			$("#RiskCurrent").text(riskCurrent);
+			$("#RiskThreshold").text(riskThreshold);
 			/*--------------折线图数据------------------*/
 			for(let i = 0;i<SimData.length;i++){
 				let node = {}

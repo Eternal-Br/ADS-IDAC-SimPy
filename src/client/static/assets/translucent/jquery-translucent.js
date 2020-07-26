@@ -10,7 +10,7 @@
     Translucent.prototype = {
         defaults: {
             target:"translucentDefultId",
-            width:360, //默认宽度
+            width:180, //默认宽度
             height:220, //默认高度
             drag:true, //启动拖拽
             opacity:0.8, //透明度

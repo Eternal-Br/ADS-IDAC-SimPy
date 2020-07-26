@@ -39,9 +39,9 @@ let ec_tree_option = {
 		type: 'tree',
 		data: mydata,
 		top: '5%',
-		left: '10%',
+		left: '25%',
 		bottom: '5%',
-		right: '10%',
+		right: '30%',
 		symbol: 'emptyCircle' ,
 		symbolSize: 14,
 
