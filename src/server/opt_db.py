@@ -63,8 +63,28 @@ def init_mysql(db='idac'):
 
 # --------------------------------------------------------
 
+def del_dynTree():
+    mydb = link_mysql()
+    cursor = mydb.cursor()
+    sql_del = "delete from dyn_tree"
+    # print(sql_insert)
+    cursor.execute(sql_del)
+    mydb.commit()  # 提交插入操作
+    print("dyn_tree table clean.")
+    mydb.close()  # 关闭数据库连接
+    pass
 
 
+def insert_into_dynTree(rootId, children):
+    mydb = link_mysql()
+    cursor = mydb.cursor()
+    sql_insert = "INSERT INTO dyn_tree (rootId,children) VALUES (%s, %s)"
+    # print(sql_insert)
+    cursor.execute(sql_insert, (rootId, children))
+    mydb.commit() # 提交插入操作
+    print("1 record inserted.")
+    mydb.close()  # 关闭数据库连接
+    pass
 
 
 def insert_into_simtree(TREEID, data):
@@ -132,6 +152,23 @@ def select_from_simtree(TREEID):
     mydb.close()
     return data
 
+def select_from_dyntree(TREEID):
+    mydb = link_mysql()
+    cursor = mydb.cursor()
+    sql_select = "SELECT rootId, children FROM dyn_tree WHERE rootId = {}".format(TREEID)
+    cursor.execute(sql_select)
+    data = cursor.fetchone() # TREEID是唯一的，两者结果是一致的
+    mydb.close()
+    return data
+
+def select_first_tree():
+    mydb = link_mysql()
+    cursor = mydb.cursor()
+    sql_select = "SELECT rootId, children FROM dyn_tree limit 1"
+    cursor.execute(sql_select)
+    data = cursor.fetchone()
+    mydb.close()
+    return data
 
 def select_lastest_tree():
     """
