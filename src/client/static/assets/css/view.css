@@ -91,12 +91,33 @@ body{
 	box-shadow:2px 2px 5px #000;
 }
 
-#tree{
-	width: 50%;
+#rudderAngle{
+	float:left;
+	width: 20%;
 	height: 100%;
 	top: 0;
 	right: 0;
-	margin-left:50%;
+	box-shadow:2px 2px 5px #000;
+	/* background-color: #028EE1; */
+}
+
+#speed{
+	float:left;
+	width: 20%;
+	height: 100%;
+	top: 0;
+	right: 0;
+	box-shadow:2px 2px 5px #000;
+	/* background-color: #028EE1; */
+}
+
+
+#tree{
+	float:left;
+	width: 60%;
+	height: 100%;
+	top: 0;
+	right: 0;
 	box-shadow:2px 2px 5px #000;
 	/* background-color: #028EE1; */
 }
