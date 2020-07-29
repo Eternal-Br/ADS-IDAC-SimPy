@@ -193,7 +193,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Header Top */
 #header.header-top {
-  height: 80px;
+  height: 55px;
   position: fixed;
   left: 0;
   top: 0;
@@ -222,7 +222,7 @@ h1, h2, h3, h4, h5, h6 {
 /*---------------iframe---------------------*/
 #iframe{
     position: relative;
-    top:100px;
+    top:58px;
 }
 /*--------------------------------------------------------------
 # Sections General

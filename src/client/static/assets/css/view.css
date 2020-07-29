@@ -82,18 +82,49 @@ body{
 	   
 }
 
-#tree{
+#above{
 	width: 100%;
-	height: 45%;
+	height: 20%;
 	top: 0;
 	right: 0;
 	background-color: #d7ffcb;
 	box-shadow:2px 2px 5px #000;
 }
 
+#rudderAngle{
+	float:left;
+	width: 20%;
+	height: 100%;
+	top: 0;
+	right: 0;
+	box-shadow:2px 2px 5px #000;
+	/* background-color: #028EE1; */
+}
+
+#speed{
+	float:left;
+	width: 20%;
+	height: 100%;
+	top: 0;
+	right: 0;
+	box-shadow:2px 2px 5px #000;
+	/* background-color: #028EE1; */
+}
+
+
+#tree{
+	float:left;
+	width: 60%;
+	height: 100%;
+	top: 0;
+	right: 0;
+	box-shadow:2px 2px 5px #000;
+	/* background-color: #028EE1; */
+}
+
 #below{
 	width: 100%;
-	height: 55%;
+	height: 80%;
 	top: 0;
 	right: 0;
 }

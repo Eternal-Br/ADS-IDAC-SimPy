@@ -10,7 +10,7 @@
     Translucent.prototype = {
         defaults: {
             target:"translucentDefultId",
-            width:360, //默认宽度
+            width:230, //默认宽度
             height:220, //默认高度
             drag:true, //启动拖拽
             opacity:0.8, //透明度
@@ -21,8 +21,8 @@
             titleHeight:"40px",//title高度
             titleGroundColor:"#999",//title默认背景色
             shadow:true,//开启阴影
-            positionTop:100,
-            positionLeft:100,
+            positionTop:420,  //弹出位置
+            positionLeft:10,  //弹出位置
             titleText:"新建弹窗",
             titleFontSize:12,
             titleFontColor:"#000",

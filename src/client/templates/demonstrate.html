@@ -10,6 +10,7 @@
     <!--引入百度地图的jssdk，这里需要使用你在百度地图开发者平台申请的 ak-->
     <script src="http://api.map.baidu.com/api?v=2.0&ak=S9AqsqjyKkt9SR4Sn7dGh5ESA7vdyrzg"></script>
     <script src="../static/assets/js/ec_tree.js"></script>
+    <script src="../static/assets/js/guage.js"></script>
     <script src="../static/assets/js/my_bmap.js"></script>
     <script src="../static/assets/js/utils.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/assets/translucent/style.css"/>
@@ -19,7 +20,7 @@
 
 <body>
     <div class="left">
-          <div id="title" style="text-align: center;padding:10px 0;"><h3 style="margin:0px;">演示系统</h3></div>
+{#          <div id="title" style="text-align: center;padding:10px 0;"><h3 style="margin:0px;">演示系统</h3></div>#}
           <div id="dashboard">
               <div class = "grid">
                 <div >VMID:</div>
@@ -43,11 +44,16 @@
           </div>
       </div>
     <div class="right">
-          <div id="tree">tree img</div>
+          <div id="above">
+              <div id="rudderAngle"></div>
+              <div id="speed"></div>
+              <div id="tree">tree img</div>
+          </div>
           <div id="below">
               <div stype="position:relative;">
-                 <div id="dcpa" style="position:absolute;width:160px;height:160px;z-index:99;"></div>
-                  <div id="tcpa" style="position:absolute;right:0;width:160px;height:160px;z-index:99;"></div>
+{#                 <div id="dcpa" style="position:absolute;width:160px;height:160px;z-index:99;"></div>#}
+{#                 <div id="tcpa" style="position:absolute;right:0;width:160px;height:160px;z-index:99;"></div>#}
+                  <div id="guage3" style="position:absolute;width:380px;height:200px;z-index:99;"></div>
               </div>
               <div id="map"></div>
           </div>

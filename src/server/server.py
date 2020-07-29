@@ -68,6 +68,12 @@ def site_demo():
 def get_tree():
     return(jsonify({"data": get_data()}))
 
+# 获取最新的仿真树data
+@app.route("/tree/first")
+def get_first_tree():
+    data = opt_db.select_first_tree()
+    return(jsonify({"TREEID": data[0], "TREEData": json.loads(data[1])}))
+    # return opt_db.select_lastest_tree()[1]
 
 # 获取最新的仿真树data
 @app.route("/tree/lastest")
@@ -91,7 +97,15 @@ def get_map():
 # 从数据库中查询指定VMID的data并返回
 @app.route("/vm/<vmid>")
 def get_vm_by_id(vmid):
-    data = opt_db.select_from_simvm(vmid)[1] # 此时是JSON格式的字符串
+    simData = opt_db.select_from_simvm(vmid)[1]  # 此时是JSON格式的字符串
+    if opt_db.select_from_dyntree(vmid) is not None:
+        treeData = opt_db.select_from_dyntree(vmid)[1]
+        simDic = json.loads(simData)
+        treeDic = json.loads(treeData)
+        dataDic = dict(simDic,**treeDic)
+        data = json.dumps(dataDic)
+    else:
+        data = simData
     return data
 
 

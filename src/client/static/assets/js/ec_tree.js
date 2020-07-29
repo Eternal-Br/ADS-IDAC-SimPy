@@ -15,12 +15,12 @@ $(function(){
 		// var vmid = "2004022208011387";
 		getVMData(vmid);
 	});
-	let dcpa = doc.getElementById('dcpa');
-	let tcpa = doc.getElementById('tcpa');
-	dcpa_chart = echarts.init(dcpa);
-	dcpa_chart.setOption(dcpaOption);
-	tcpa_chart = echarts.init(tcpa);
-	tcpa_chart.setOption(tcpaOption);
+	// let dcpa = doc.getElementById('dcpa');
+	// let tcpa = doc.getElementById('tcpa');
+	// dcpa_chart = echarts.init(dcpa);
+	// dcpa_chart.setOption(dcpaOption);
+	// tcpa_chart = echarts.init(tcpa);
+	// tcpa_chart.setOption(tcpaOption);
 })
 
 // 鼠标点击事件放在utiLs.js中
@@ -39,11 +39,12 @@ let ec_tree_option = {
 		type: 'tree',
 		data: mydata,
 		top: '5%',
-		left: '10%',
+		left: '25%',
 		bottom: '5%',
-		right: '10%',
+		right: '30%',
 		symbol: 'emptyCircle' ,
 		symbolSize: 14,
+        edgeShape: 'polyline',
 
 		label: {
 			show: true,
@@ -56,6 +57,7 @@ let ec_tree_option = {
 		lineStyle: {
 			color: "'#838300'",
 			width: 1.5,
+            curveness: 0.8,
 
 		},
 
@@ -67,7 +69,7 @@ let ec_tree_option = {
 			}
 		},
 
-		expandAndCollapse: false,
+		expandAndCollapse: true,
 		initialTreeDepth: 5,
 		animationDuration: 550,
 		animationDurationUpdate: 750
