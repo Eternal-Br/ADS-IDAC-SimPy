@@ -79,7 +79,8 @@ function animation(SimData) {
 				}
 				shipPointList.push(pointList);
 			}
-			for(let i=0;i<pointSize;i++){
+
+			for(let i=0;i<pointSize-1;i++){
 				for(let ship = 0;ship< shipNum;ship++) {
 					(function(ship,pointList,timeOut,i,rotation){
 					setTimeout(()=>{

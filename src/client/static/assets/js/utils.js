@@ -79,9 +79,9 @@ function animation(SimData) {
 
 		speedOption.series[0].data[0].value = speed;
 		speedGuage.setOption(speedOption,true);
-		let dcpaNumber = new Number(dcpa/100);
+		let dcpaNumber = new Number(dcpa/1852);
 		let DCPA = dcpaNumber.toFixed(2);
-		let tcpaNumber = new Number(dcpa/100);
+		let tcpaNumber = new Number(tcpa/60);
 		let TCPA = tcpaNumber.toFixed(2);
 		guage3Option.series[1].data[0].value = DCPA;
 		guage3Option.series[2].data[0].value = TCPA;

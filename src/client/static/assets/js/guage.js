@@ -8,16 +8,15 @@ $(function(){
     guage3Guage = echarts.init(document.getElementById('guage3'));
     guage3Guage.setOption(guage3Option);
 })
-
 let rudderAngleOption = {
-   title: {
-        textStyle: {
-            fontWeight: "normal",
-            color: "#fff",
-            fontSize: 14
-        },
-        text: '舵角', //标题文本内容
-    },
+   // title: {
+   //      textStyle: {
+   //          fontWeight: "normal",
+   //          color: "#fff",
+   //          fontSize: 14
+   //      },
+   //      text: '舵角', //标题文本内容
+   //  },
     backgroundColor: '#1b1b1b',
     tooltip: {
         formatter: '{a} <br/>{c} {b}'
@@ -26,8 +25,8 @@ let rudderAngleOption = {
         show: true,
         feature: {
             mark: {show: true},
-            restore: {show: true},
-            saveAsImage: {show: true}
+            // restore: {show: true},
+            // saveAsImage: {show: true}
         }
     },
     series: [
@@ -79,19 +78,19 @@ let rudderAngleOption = {
                     shadowBlur: 8
                 }
             },
-            data: [{value: 0, name: '度'}]
+            data: [{value: 0, name: '舵角/度'}]
         }
     ]
 };
 let speedOption = {
-    title: {
-        textStyle: {
-            fontWeight: "normal",
-            color: "#fff",
-            fontSize: 14
-        },
-        text: '速度', //标题文本内容
-    },
+    // title: {
+    //     textStyle: {
+    //         fontWeight: "normal",
+    //         color: "#fff",
+    //         fontSize: 14
+    //     },
+    //     text: '速度', //标题文本内容
+    // },
     backgroundColor: '#1b1b1b',
     tooltip: {
         formatter: '{a} <br/>{c} {b}'
@@ -100,8 +99,8 @@ let speedOption = {
         show: true,
         feature: {
             mark: {show: true},
-            restore: {show: true},
-            saveAsImage: {show: true}
+            // restore: {show: true},
+            // saveAsImage: {show: true}
         }
     },
     series: [
@@ -158,15 +157,15 @@ let speedOption = {
     ]
 };
 let guage3Option = {
-    title: {
-        textStyle: {
-            fontWeight: "normal",
-            color: "#fff",
-            fontSize: 14
-        },
-        text: 'DCPA/RISK/TCPA', //标题文本内容
-    },
-    backgroundColor: '#1b1b1b',
+    // title: {
+    //     textStyle: {
+    //         fontWeight: "normal",
+    //         color: "#fff",
+    //         fontSize: 14
+    //     },
+    //     text: 'DCPA/RISK/TCPA', //标题文本内容
+    // },
+    backgroundColor: '',
     tooltip: {
         formatter: '{a} <br/>{c} {b}'
     },
@@ -174,8 +173,8 @@ let guage3Option = {
         show: true,
         feature: {
             mark: {show: true},
-            restore: {show: true},
-            saveAsImage: {show: true}
+            // restore: {show: true},
+            // saveAsImage: {show: true}
         }
     },
     series: [
@@ -196,25 +195,28 @@ let guage3Option = {
             },
             axisLabel: {            // 坐标轴小标记
                 fontWeight: 'bolder',
-                color: '#fff',
+                color: '#FFA500',
                 shadowColor: '#fff', //默认透明
                 shadowBlur: 10
             },
             splitLine : { //分割线样式（及10、20等长线样式）
+                color: '#FFA500',
                 length : 7,
                 lineStyle : { // 属性lineStyle控制线条样式
+                    color: '#FFA500',
                     width : 2
                 }
             },
             axisTick : { //刻度线样式（及短线样式）
+                color: '#FFA500',
                 length : 4
             },
             axisLabel : { //文字样式
-                color : "white",
+                color : "#FFA500",
                 distance : 5 //文字离表盘的距离
             },
             pointer: {           // 分隔线
-                shadowColor: '#fff', //默认透明
+                shadowColor: '#FFA500', //默认透明
                 shadowBlur: 5
             },
             title: {
@@ -222,7 +224,7 @@ let guage3Option = {
                     fontWeight: 'bolder',
                     fontSize: 8,
                     fontStyle: 'italic',
-                    color: '#fff',
+                    color: '#FFA500',
                     shadowColor: '#fff', //默认透明
                     shadowBlur: 8
                 }
@@ -240,7 +242,7 @@ let guage3Option = {
             splitNumber: 10,
             axisLine: {            // 坐标轴线
                 lineStyle: {       // 属性lineStyle控制线条样式
-                    color: [[0.29, 'lime'], [0.86, '#1e90ff'], [1, '#ff4500']],
+                    color: [[0.29, '#ff4500'], [0.86, '#1e90ff'], [1, 'lime']],
                     width: 2,
                     shadowColor: '#fff', //默认透明
                     shadowBlur: 10
@@ -248,21 +250,24 @@ let guage3Option = {
             },
             axisLabel: {            // 坐标轴小标记
                 fontWeight: 'bolder',
-                color: '#fff',
+                color: '#FFA500',
                 shadowColor: '#fff', //默认透明
                 shadowBlur: 10
             },
             splitLine : { //分割线样式（长线样式）
+                color: '#FFA500',
                 length : 7,
                 lineStyle : { // 属性lineStyle控制线条样式
+                    color: '#FFA500',
                     width : 2
                 }
             },
             axisTick : { //刻度线样式（及短线样式）
+                color: '#FFA500',
                 length : 4
             },
             axisLabel : { //文字样式
-                color : "white",
+                color : "#FFA500",
                 distance : 5 //文字离表盘的距离
             },
             pointer: {
@@ -276,12 +281,12 @@ let guage3Option = {
                     fontWeight: 'bolder',
                     fontStyle: 'italic',
                     fontSize: 8,
-                    color: '#fff',
+                    color: '#FFA500',
                     shadowColor: '#fff', //默认透明
                     shadowBlur: 10
                 }
             },
-            data: [{value: 0, name: 'DCPA/百'}]
+            data: [{value: 0, name: 'DCPA/nm'}]
         },
         {
             name: 'TCPA',
@@ -294,7 +299,7 @@ let guage3Option = {
             splitNumber: 10,
             axisLine: {            // 坐标轴线
                 lineStyle: {       // 属性lineStyle控制线条样式
-                    color: [[0.2, 'lime'], [0.8, '#1e90ff'],[1, '#ff4500']],
+                    color: [[0.2,'#ff4500'], [0.8, '#1e90ff'],[1,'lime']],
                     width: 2,
                     shadowColor: '#fff', //默认透明
                     shadowBlur: 10
@@ -302,21 +307,24 @@ let guage3Option = {
             },
             axisLabel: {            // 坐标轴小标记
                 fontWeight: 'bolder',
-                color: '#fff',
+                color: '#FFA500',
                 shadowColor: '#fff', //默认透明
                 shadowBlur: 10
             },
             splitLine : { //分割线样式（及长线样式）
+                color: '#FFA500',
                 length : 7,
                 lineStyle : { // 属性lineStyle控制线条样式
+                    color: '#FFA500',
                     width : 2
                 }
             },
             axisTick : { //刻度线样式（及短线样式）
+                color: '#FFA500',
                 length : 4
             },
             axisLabel : { //文字样式
-                color : "white",
+                color : "#FFA500",
                 distance : 5 //文字离表盘的距离
             },
             pointer: {
@@ -330,12 +338,12 @@ let guage3Option = {
                     fontWeight: 'bolder',
                     fontStyle: 'italic',
                     fontSize: 8,
-                    color: '#fff',
+                    color: '#FFA500',
                     shadowColor: '#fff', //默认透明
                     shadowBlur: 10
                 }
             },
-            data: [{value: 0, name: 'TCPA/百'}]
+            data: [{value: 0, name: 'TCPA/min'}]
         },
     ]
 };
