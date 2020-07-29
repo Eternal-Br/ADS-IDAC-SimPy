@@ -1,7 +1,0 @@
-Flask
-numpy
-redis
-treelib
-mysql-connector
-matplotlib
-shapely

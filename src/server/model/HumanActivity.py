@@ -61,6 +61,7 @@ def ProbDeciEngie(ShipStatus):
     speed2 = ShipStatus[1]['speed']
 
     DeciProb = OOW(pos1, heading1, speed1, pos2, heading2, speed2)
+    print(DeciProb)
     return DeciProb
 
 
@@ -120,7 +121,7 @@ def OOW(pos1, heading1, speed1, pos2, heading2, speed2):
     # T0 = 600
     T0 = 300
     RiskCurrent=0.5*((Dmax-DCPA)/(Dmax-D0))+0.5*((Tmax-TCPA)/(Tmax-T0))
-    print("RiskCurrent: ", RiskCurrent)
+    # print("RiskCurrent: ", RiskCurrent)
     # 4.分支概率计算
     # 先计算 Master决策出的概率
     DeciProb = Master(pos1, heading1, speed1, pos2, heading2, speed2)
@@ -132,7 +133,8 @@ def OOW(pos1, heading1, speed1, pos2, heading2, speed2):
         "TurnRight": TR
     } 
     """
-    print("当前风险值：", RiskCurrent, "  风险阈值：", RiskThreshold)
+    # print("当前风险值：", RiskCurrent, "  风险阈值：", RiskThreshold)
+    # print("Current risk value: ", RiskCurrent, "  risk threshold: ", RiskThreshold)
 
     if RiskCurrent > RiskThreshold:
         PrAlert = (RiskCurrent-RiskThreshold)/(1-RiskThreshold)
@@ -141,7 +143,7 @@ def OOW(pos1, heading1, speed1, pos2, heading2, speed2):
             PrAlert = 0.999999
         # PrAlert归一化处理
         # PrAlert = (RiskCurrent-RiskThreshold)/RiskCurrent
-        print("PrAlert: ", PrAlert)
+        # print("PrAlert: ", PrAlert)
         # Master做出了决策
         FLAG = 1
         DeciProb["FLAG"] = FLAG # 添加一个键值对 标识已经做出决策
@@ -209,13 +211,13 @@ def Master(pos1, heading1, speed1, pos2, heading2, speed2):
     #     heading2_temp = heading2_temp+360
 
     if pos2_temp[0] > 0:    # x>0即目标船在本船坐标系的第一或第四象限，即在本船的右侧，本船为让路船
-        print("我是让路船...")
+        # print("我是让路船...")
         TR = 0.6
         GH = 0.3
         TL = 0.1
     else: # 否则本船为直航船
         # 目标在左边，他让路，我直航，我应该直着走或者左转，目标都是尽快从他船头过
-        print("我是直航船...")
+        # print("我是直航船...")
         TR = 0.1
         GH = 0.6
         TL = 0.3
@@ -239,3 +241,79 @@ def coord_conv(x, y, theta):
     x_0 = x*np.cos(theta * np.pi / 180)-y*np.sin(theta * np.pi / 180)
     y_0 = x*np.sin(theta * np.pi / 180)+y*np.cos(theta * np.pi / 180)
     return [x_0, y_0]
+
+
+def A1(a1, v1, pos1, a2, v2, pos2):
+    """
+    : a1: alpha, the course of ship1,
+    : v1: the velocity of ship1,
+    : pos1: the position of ship1, pos looks like [123.21, 31.32],
+    : a2: alpha, the course of ship2,
+    : v2: the velocity of ship2,
+    : pos2: the position of ship2, pos looks like [123.21, 31.32]
+    """
+    deltav = 0.05
+    v1delta = deltav * v1 # delta v1
+    v1new = v1 # new v1
+
+    tc = 0
+    deltat = 10
+
+    Dthre = 1852 # DCPA 阈值, 1海里 = 1.852 KM
+    DCPA = 0
+    break_flag_1 = False
+    # 让路船先减速, 判断能否有效避碰（DCPA> Dthre）
+    for i in range(0, int(0.5/deltav), 1):
+        v1new = v1 - i * v1delta
+        for j in range(0, int(100/deltat), 1):
+            tc = j * deltat
+            DCPA = CPA.ComputeDynamicDCPA(pos1, a1, v1, pos2, a2, v2, tc, v1new)
+            print('减速中, DCPA, tc: ', DCPA, tc)
+            if DCPA > Dthre:
+                break_flag_1 = True
+                break
+        if break_flag_1 == True:
+            print('减速阶段已成功避碰.')
+            break
+        v1new = v1 # 回正v1
+    
+    # 如果充分减速（速度减至0.5*v1）后仍不能有效避碰（DCPA>Dthre），则开始计算右转
+    Athre = 45
+    deltaa = 5
+    if DCPA < Dthre:
+        print('预测通过减速无法成功避碰，准备转向...')
+        DCPA = 0
+        v1new = 0.5 * v1
+        tc = 0
+        a1_temp = a1
+        break_flag_2 = False
+        for i in range(0, int(Athre / deltaa), 1):
+            a1_temp = a1_temp + i * deltaa
+            for j in range(0, int(100/deltat), 1):
+                tc = j * deltat
+                DCPA = CPA.ComputeDynamicDCPA(pos1, a1_temp, v1, pos2, a2, v2, tc, v1new)
+                print('转向中，DCPA, alpha, tc:', DCPA, a1_temp, tc)
+                if DCPA > Dthre:
+                    break_flag_2 = True
+                    break
+            if break_flag_2 == True:
+                print('转向阶段成功避碰')
+                break
+            a1_temp = a1 # 回正a1
+        # 判断充分右转后能否避碰
+        if DCPA < Dthre:
+            # 避碰失败 怎么办
+            print('避碰失败.')
+            tc, a1_temp, v1new
+            pass
+        else:
+            # 避碰成功
+            return tc, a1_temp, v1new
+    else: 
+        return tc, 0, v1new
+
+
+
+mtc, ma, mv = A1(10, 9.8, [123, 35], 350, 10.2, [123.1, 35])
+
+

@@ -39,9 +39,9 @@ IDAC: The Information, Decision, and Action in a Crew context cognitive model.
 
 2. Use this command *pip install -r requirements.txt* in the project directory to install the dependencies. If the installation fails, or a certain dependency is missing during installation and use, you need to use *python -m pip install [packagename]* to install it manually.
 
-3. If you have a remote database MySQL that you can use, please log in to the remote database as root first, then go to 5, otherwise go to 4.
+3. If you have a remote database MySQL that you can use, please sign in the remote database as root first, then go to 5, otherwise go to 4.
 
-4. If you do not have the remote database software available, you need to install the MySQL database software on your computer system, and then you need to do the related configuration work. You can refer to [this link](https://phoenixnap.com/kb/install-mysql-on-windows) to install and configure MySQL. But I recommand you selecting *Use legacy Authentacion Method* when chosing Authentacion Methods. By default here, you have already done the relevant operations and logged in to the database as root user.
+4. If you do not have the remote database software available, you need to install the MySQL database software on your computer system, and then you need to do the related configuration work. You can refer to [this link](https://phoenixnap.com/kb/install-mysql-on-windows) to install and configure MySQL. And I recommand you selecting *Use legacy Authentacion Method* when chosing Authentacion Methods. By default here, you have already done the relevant operations and logged in to the database as root user.
 
 5. You operate as root:
 
@@ -49,7 +49,7 @@ IDAC: The Information, Decision, and Action in a Crew context cognitive model.
 
 ​   （2）Create a new user User name: *user1* , and whos Password is : \*\*\*\*\*
 
-​   （3）Assign idac database permissions foruser1
+​   （3）Assign idac database permissions for user1
 
 6. Call the init_mysql () function in src/server/opt_db.py to initialize the corresponding data table. Note that the password for connecting to the database here should be the same as the one you set in the previous step.
 

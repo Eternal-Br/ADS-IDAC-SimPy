@@ -3,7 +3,7 @@ Trans Between Coordinate and Distance
 提供经度差、纬度差转化为距离的函数
 提供距离转化为经度差、纬度差的函数
 """
-from numpy import cos, pi
+from math import cos, pi
 
 
 def DeltaLat2DeltaMeter(DeltaLat):
@@ -57,3 +57,6 @@ def TransGCS2CCS(pos1,course1,speed1,pos2,course2,speed2):
     # print("pos2转化之后: ", pos2)
     pos1  = [0, 0]
     return pos1,course1,speed1,pos2,course2,speed2
+
+
+# print(DeltaLon2DeltaMeter(1/60, 30))

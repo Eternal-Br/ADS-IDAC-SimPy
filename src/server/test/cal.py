@@ -25,11 +25,11 @@
 # y = (input_y - center_y) / 5
 # print(x, y)
 
-def work_line(input_x, input_y):
-    min_x = 11705648
-    min_y = 3444255
-    x = (input_x - min_x) / 5
-    y = (input_y - min_y) / 5
-    print(x, y)
+# def work_line(input_x, input_y):
+#     min_x = 11705648
+#     min_y = 3444255
+#     x = (input_x - min_x) / 5
+#     y = (input_y - min_y) / 5
+#     print(x, y)
 
-work_line(11706148.033686293,3444939.876069123)
+# work_line(11706148.033686293,3444939.876069123)

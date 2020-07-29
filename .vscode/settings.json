@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "venv\\Scripts\\python.exe",
+    "python.jediEnabled": false,
+    "python.languageServer": "Microsoft",
+}
