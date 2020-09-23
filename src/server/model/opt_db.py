@@ -18,8 +18,8 @@ def link_mysql(db="idac"):
     mydb = mysql.connector.connect(
     host='127.0.0.1',
     port = 3306,
-    user='root',      # 数据库IP、用户名和密码
-    passwd='root',
+    user='user1',      # 数据库IP、用户名和密码
+    passwd='hello',
     database = db,
     charset = 'utf8'
     )
@@ -27,6 +27,7 @@ def link_mysql(db="idac"):
     pass
 
 
+# --------------------------------------------------------
 """ 
 创建数据库之后初始化数据数据表 谨慎操作
 如果您已经建立了数据库和数据表，则无需此操作 
@@ -62,9 +63,28 @@ def init_mysql(db='idac'):
 
 # --------------------------------------------------------
 
+def del_dynTree():
+    mydb = link_mysql()
+    cursor = mydb.cursor()
+    sql_del = "delete from dyn_tree"
+    # print(sql_insert)
+    cursor.execute(sql_del)
+    mydb.commit()  # 提交插入操作
+    print("dyn_tree table clean.")
+    mydb.close()  # 关闭数据库连接
+    pass
 
 
-
+def insert_into_dynTree(rootId, children):
+    mydb = link_mysql()
+    cursor = mydb.cursor()
+    sql_insert = "INSERT INTO dyn_tree (rootId,children) VALUES (%s, %s)"
+    # print(sql_insert)
+    cursor.execute(sql_insert, (rootId, children))
+    mydb.commit() # 提交插入操作
+    print("1 record inserted.")
+    mydb.close()  # 关闭数据库连接
+    pass
 
 
 def insert_into_simtree(TREEID, data):
@@ -132,6 +152,23 @@ def select_from_simtree(TREEID):
     mydb.close()
     return data
 
+def select_from_dyntree(TREEID):
+    mydb = link_mysql()
+    cursor = mydb.cursor()
+    sql_select = "SELECT rootId, children FROM dyn_tree WHERE rootId = {}".format(TREEID)
+    cursor.execute(sql_select)
+    data = cursor.fetchone() # TREEID是唯一的，两者结果是一致的
+    mydb.close()
+    return data
+
+def select_first_tree():
+    mydb = link_mysql()
+    cursor = mydb.cursor()
+    sql_select = "SELECT rootId, children FROM dyn_tree limit 1"
+    cursor.execute(sql_select)
+    data = cursor.fetchone()
+    mydb.close()
+    return data
 
 def select_lastest_tree():
     """
@@ -178,6 +215,7 @@ def select_from_voimg(imgID):
     return data
 
 # print('latest treeid: ', select_lastest_tree())
+# init_mysql(db='aa')
 
 # ---------------------------------------------------------------
 # Old method

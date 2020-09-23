@@ -139,7 +139,7 @@ def main():
     print('SimTreeID: ', SimTreeID)
     # print(Tree_to_eChartsJSON(sTree))
     sTree.show()
-    write2db(SimTreeID, sTree, VMpool)
+    # write2db(SimTreeID, sTree, VMpool)
     # for item in VMpool:
     #     print("VMID: ", item["VMID"])
     # print("pause.")

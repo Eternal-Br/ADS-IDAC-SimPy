@@ -18,8 +18,8 @@ def link_mysql(db="idac"):
     mydb = mysql.connector.connect(
     host='127.0.0.1',
     port = 3306,
-    user='root',      # 数据库IP、用户名和密码
-    passwd='root',
+    user='user1',      # 数据库IP、用户名和密码
+    passwd='hello',
     database = db,
     charset = 'utf8'
     )

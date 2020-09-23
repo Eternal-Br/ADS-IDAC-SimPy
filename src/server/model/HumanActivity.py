@@ -15,24 +15,6 @@ import CPA
 
 -> 当前版本为1.0版
 """
-# def DeltaLat2DeltaMeter(DeltaLat):
-#     """ 
-#     将纬度差转换为距离差(单位:米), 0.1纬度取1852m.
-#     : DeltaLat: 纬度差,
-#     : return DeltaMeter.
-#     """
-#     DeltaMeter = DeltaLat * 18520
-#     return DeltaMeter
-
-# def DeltaLon2DeltaMeter(DeltaLon, CurrentLat):
-#     """ 
-#     将纬度差转换为距离差(单位:米), 0.1维度取1852m.
-#     : DeltaLat: 纬度差,
-#     : CurrentLat: 当前实际纬度,
-#     : return DeltaMeter.
-#     """
-#     DeltaMeter = DeltaLon * 111 * np.cos(CurrentLat) * 1000
-#     return DeltaMeter
 
 
 def ProbDeciEngie(ShipStatus):
@@ -243,8 +225,25 @@ def coord_conv(x, y, theta):
     return [x_0, y_0]
 
 
-def A1(a1, v1, pos1, a2, v2, pos2):
+def conv(ship1, ship2, theta):
+    # 先平移坐标系 再旋转坐标系
+    x = ship2.lon - ship1.lon
+    y = ship2.lat - ship1.lat
+    x_0 = x*np.cos(theta * np.pi / 180)-y*np.sin(theta * np.pi / 180)
+    y_0 = x*np.sin(theta * np.pi / 180)+y*np.cos(theta * np.pi / 180)
+    # 如果y_0>0, 对方船在1 4象限 我是让路船
+    return x_0
+
+def calc_delta_angle(alpha1, alpha2):
+    delta = abs(alpha1 - alpha2)
+    if delta <= 180:
+        return delta
+    else:
+        return abs(360 - delta)
+
+def HLD(a1, v1, pos1, a2, v2, pos2):
     """
+    Human-Like Decition
     : a1: alpha, the course of ship1,
     : v1: the velocity of ship1,
     : pos1: the position of ship1, pos looks like [123.21, 31.32],
@@ -260,60 +259,242 @@ def A1(a1, v1, pos1, a2, v2, pos2):
     deltat = 10
 
     Dthre = 1852 # DCPA 阈值, 1海里 = 1.852 KM
-    DCPA = 0
-    break_flag_1 = False
-    # 让路船先减速, 判断能否有效避碰（DCPA> Dthre）
-    for i in range(0, int(0.5/deltav), 1):
-        v1new = v1 - i * v1delta
-        for j in range(0, int(100/deltat), 1):
-            tc = j * deltat
-            DCPA = CPA.ComputeDynamicDCPA(pos1, a1, v1, pos2, a2, v2, tc, v1new)
-            print('减速中, DCPA, tc: ', DCPA, tc)
-            if DCPA > Dthre:
-                break_flag_1 = True
-                break
-        if break_flag_1 == True:
-            print('减速阶段已成功避碰.')
-            break
-        v1new = v1 # 回正v1
-    
-    # 如果充分减速（速度减至0.5*v1）后仍不能有效避碰（DCPA>Dthre），则开始计算右转
-    Athre = 45
-    deltaa = 5
+    # Dthre = 1000 # DCPA 阈值, 1海里 = 1.852 KM
+    # DCPA = 0
+    DCPA = CPA.ComputeDCPA(pos1, a1, v1, pos2, a2, v2)
+    print('Current DCPA: ', DCPA)
     if DCPA < Dthre:
-        print('预测通过减速无法成功避碰，准备转向...')
-        DCPA = 0
-        v1new = 0.5 * v1
-        tc = 0
-        a1_temp = a1
-        break_flag_2 = False
-        for i in range(0, int(Athre / deltaa), 1):
-            a1_temp = a1_temp + i * deltaa
+        break_flag_1 = False
+        # 让路船先减速, 判断能否有效避碰（DCPA> Dthre）
+        for i in range(0, int(0.5/deltav), 1):
+            v1new = v1 - i * v1delta
             for j in range(0, int(100/deltat), 1):
                 tc = j * deltat
-                DCPA = CPA.ComputeDynamicDCPA(pos1, a1_temp, v1, pos2, a2, v2, tc, v1new)
-                print('转向中，DCPA, alpha, tc:', DCPA, a1_temp, tc)
+                DCPA = CPA.ComputeDynamicDCPA(pos1, a1, v1, pos2, a2, v2, tc, v1new)
+                print('减速中, DCPA, tc: ', DCPA, tc)
                 if DCPA > Dthre:
+                    break_flag_1 = True
+                    break
+            if break_flag_1 == True:
+                print('减速阶段已成功避碰.')
+                break
+            v1new = v1 # 回正v1
+        
+        # 如果充分减速（速度减至0.5*v1）后仍不能有效避碰（DCPA>Dthre），则开始计算右转
+        Athre = 45
+        deltaa = 5
+        if DCPA < Dthre:
+            print('预测通过减速无法成功避碰，准备转向...')
+            DCPA = 0
+            v1new = 0.5 * v1
+            tc = 0
+            a1_temp = a1
+            break_flag_2 = False
+            for i in range(0, int(Athre / deltaa), 1):
+                a1_temp = a1_temp + i * deltaa
+                for j in range(0, int(100/deltat), 1):
+                    tc = j * deltat
+                    DCPA = CPA.ComputeDynamicDCPA(pos1, a1_temp, v1, pos2, a2, v2, tc, v1new)
+                    # DCPA = CPA.JDCPA()
+                    print('转向中，DCPA, alpha, tc:', DCPA, a1_temp, tc)
+                    if DCPA > Dthre:
+                        break_flag_2 = True
+                        break
+                if break_flag_2 == True:
+                    print('转向阶段成功避碰')
+                    break
+                a1_temp = a1 # 回正a1
+            # 判断充分右转后能否避碰
+            if DCPA < Dthre:
+                # 避碰失败 怎么办
+                print('避碰失败.')
+                # TODO
+                return 0, 0, v1
+                # tc, a1_temp, v1new
+                pass
+            else:
+                # 避碰成功
+                return tc, a1_temp, v1new
+        else: 
+            return tc, 0, v1new
+    else:
+        # DCPA > Dthre
+        return 0, 0, v1
+
+
+def AHLD(my_ship, target_ship):
+    """
+    Advanced Human-Like Decition
+    : my_ship: looks like a ship object, 
+    : target_ship: looks like [ship1, ship2, ...]
+    target ship is the ship in my ship's radar range
+    """
+    critical_angle = 22.5
+    stand_on_ship = []
+    for ship in target_ship:
+        # delta_lon = my_ship.lon - ship.lon
+        delta_lon = conv(my_ship, ship, my_ship.heading)
+        # if delta_lon < 0: # 本船是让路船 目标船是直航船
+        if delta_lon > 0: # 本船是让路船 目标船是直航船
+            stand_on_ship.append(ship)
+
+    GW1_vc_max = 0
+    GW1_tc_max = 0
+    GW2_tc_max = 0
+    GW2_ac_max = 0
+    has_ship = False
+    if len(stand_on_ship) > 0: # 有船
+        has_ship = True
+        # 这里已经更新了 stand_on_ship, 下面判断夹角
+        GW1 = [] # 小角度
+        GW2 = [] # 大角度
+        for ship in stand_on_ship:
+            delta = calc_delta_angle(my_ship.heading, ship.heading)
+            if delta < critical_angle:
+                GW1.append(ship)
+            else:
+                GW2.append(ship)
+        # 到此已经全部的船分组为小角度和大角度两组
+        # 下面开始算小角度的
+        GW1_vc = []
+        GW1_tc = []
+        for ship in GW1:
+            # 计算本船与其决策结果 减速阶段
+            vc, tc = A1(my_ship, ship)
+            GW1_vc.append(vc)
+            GW1_tc.append(tc)
+
+        if len(GW1_vc) > 0:
+            GW1_vc_max = max(GW1_vc)
+        if len(GW1_tc) > 0:
+            GW1_tc_max = max(GW1_tc)
+        # 下面开始算大角度的 
+        GW2_tc = []
+        GW2_ac = []
+        for ship in GW2:
+            # 计算本船与其决策结果 转向阶段
+            tc2, ac2 = A2(my_ship, ship, GW1_vc_max)
+            GW2_tc.append(tc2)
+            GW2_ac.append(ac2)
+
+        if len(GW2_tc) > 0:
+            GW2_tc_max = max(GW2_tc)
+        if len(GW2_ac) > 0:
+            GW2_ac_max = max(GW2_ac)
+    else: # 无船
+        pass
+    
+    return has_ship, GW1_vc_max, GW2_ac_max, GW2_tc_max
+
+def A1(my_ship, target_ship):
+    '''
+    : my_ship: an instance of ship class, 
+    : target_ship: an instance of ship class.
+    '''
+    v1, a1, pos1 = my_ship.speed, my_ship.heading, [my_ship.lon, my_ship.lat]
+    v2, a2, pos2 = target_ship.speed, target_ship.heading, [target_ship.lon, target_ship.lat]
+    deltav = 0.05
+    v1delta = deltav * v1 # delta v1
+    v1new = v1 # new v1
+
+    tc = 0 # 运行的时间
+    deltat = 10
+    # TODO 注意 Dthre或许换为经纬度值
+    Dthre = 1852 # DCPA 阈值, 1海里 = 1.852 KM
+    # Dthre = 1000 # DCPA 阈值, 1海里 = 1.852 KM
+    DCPA = CPA.ComputeDCPA(pos1, a1, v1, pos2, a2, v2)
+    print('Current DCPA: ', DCPA)
+    if DCPA < Dthre:
+        JDCPA = 9999
+        break_flag_1 = False
+        # 让路船先减速, 判断能否有效避碰（DCPA> Dthre）
+        for i in range(0, int(0.5/deltav), 1):
+            v1new = v1 - i * v1delta
+            for j in range(0, int(100/deltat), 1):
+                tc = j * deltat
+                # DCPA = CPA.ComputeDynamicDCPA(pos1, a1, v1, pos2, a2, v2, tc, v1new)
+                tc2, a2new, v2new = 0, target_ship.original_heading, target_ship.original_speed
+                if len(target_ship.decision_content) > 0:
+                    v2new = target_ship.original_speed - target_ship.decision_content[0]
+                    a2new = target_ship.original_heading + target_ship.decision_content[1]
+                    tc2 = target_ship.decision_content[2]
+                t2new = target_ship.applied_decision_lenth * target_ship.interval
+                JDCPA = CPA.JDCPA(
+                    target_ship.decision_status,
+                    [my_ship.lon, my_ship.lat], my_ship.original_heading, my_ship.original_speed, 
+                    [target_ship.lon, target_ship.lat], target_ship.original_heading, target_ship.original_speed, 
+                    tc, v1new, my_ship.original_heading, 
+                    t2new, tc2, a2new, v2new
+                )
+                print('减速中, JDCPA, tc: ', JDCPA, tc)
+                if JDCPA > Dthre:
+                    break_flag_1 = True
+                    break
+            if break_flag_1 == True:
+                print('减速阶段成功避碰GW1.')
+                break
+        # TODO 这一快还要捋一捋
+    vc = v1 - v1new # 速度的该变量
+    return vc, tc
+
+def A2(my_ship, target_ship, GW1_vc_max):
+    v1, a1, pos1 = my_ship.speed, my_ship.heading, [my_ship.lon, my_ship.lat]
+    v2, a2, pos2 = target_ship.speed, target_ship.heading, [target_ship.lon, target_ship.lat]
+    v1new = v1 - GW1_vc_max
+    a1new = a1
+    Athre = 45
+    deltaa = 5
+    deltat = 10
+    Dthre = 500 # TODO 注意是否要米和经纬度转换
+    Dthre2 = 800
+    DCPA = CPA.ComputeDCPA(pos1, a1, v1, pos2, a2, v2)
+    tc = 0 # 转向阶段走的时间
+    if DCPA < Dthre:
+        # print('预测通过减速无法成功避碰，准备转向...')
+        JDCPA = 9999
+        break_flag_2 = False
+        for i in range(0, int(Athre / deltaa), 1):
+            a1new = a1 + i * deltaa # TODO 错了 改了
+            for j in range(0, int(100/deltat), 1):
+                tc = j * deltat
+                tc2, a2new, v2new = 0, target_ship.original_heading, target_ship.original_speed
+                if len(target_ship.decision_content) > 0:
+                    # print('target ship original speed, target ship decition content[0]', target_ship.original_speed, target_ship.decision_content[0])
+                    v2new = target_ship.original_speed - target_ship.decision_content[0]
+                    a2new = target_ship.original_heading + target_ship.decision_content[1]
+                    tc2 = target_ship.decision_content[2]
+                t2new = target_ship.applied_decision_lenth * target_ship.interval
+                JDCPA = CPA.JDCPA(
+                    target_ship.decision_status,
+                    [my_ship.lon, my_ship.lat], my_ship.original_heading, my_ship.original_speed, 
+                    [target_ship.lon, target_ship.lat], target_ship.original_heading, target_ship.original_speed, 
+                    tc, v1new, a1new, 
+                    t2new, tc2, a2new, v2new
+                )
+                # print('转向中，DCPA, alpha, tc:', JDCPA, a1new, tc)
+                if JDCPA > Dthre2:
                     break_flag_2 = True
                     break
             if break_flag_2 == True:
-                print('转向阶段成功避碰')
-                break
-            a1_temp = a1 # 回正a1
-        # 判断充分右转后能否避碰
-        if DCPA < Dthre:
+                print('time:{} myship:{} 与target ship:{} 转向阶段成功避碰GW2, JDCPA:{}'.format(my_ship.tick, my_ship.id, target_ship.id, JDCPA))
+                break       
+        if JDCPA < Dthre2:
             # 避碰失败 怎么办
-            print('避碰失败.')
-            tc, a1_temp, v1new
-            pass
-        else:
-            # 避碰成功
-            return tc, a1_temp, v1new
-    else: 
-        return tc, 0, v1new
+            print('time:{} myship:{} 与target ship:{} GW2避碰失败, JDCPA:{}.'.format(my_ship.tick, my_ship.id, target_ship.id, JDCPA))
+            # TODO
+    #         return tc, a1-a1new
+    #         # tc, a1new, v1new
+    #         pass
+    #     else:
+    #         # 避碰成功
+    #         return tc, a1-a1new
+    # else: 
+    #     return tc, a1-a1new
+    return tc, a1new - a1
 
 
-
-mtc, ma, mv = A1(10, 9.8, [123, 35], 350, 10.2, [123.1, 35])
+# mtc, ma, mv = HLD(10, 9.8, [123, 35], 350, 10.2, [123.1, 35])
+# mtc, ma, mv = HLD(10, 9.8, [122.995, 34.995], 350, 10, [123.051, 35.001])
+# print(mtc, ma, mv)
 
 

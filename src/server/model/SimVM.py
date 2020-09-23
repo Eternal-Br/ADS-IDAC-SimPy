@@ -482,10 +482,10 @@ def SimTestRandomInit():
 #         pass
 
 
-def main():
-    SimTest()
-    # SimTestRandomInit()
-    pass
+# def main():
+#     SimTest()
+#     # SimTestRandomInit()
+#     pass
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
